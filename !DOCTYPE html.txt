@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FreshBin Pros | Trash Can Cleaning</title>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin:0;
+    padding:0;
+    background:#e5e0d8; /* mastic */
+    color:#333;
+  }
+
+  header {
+    background:#1e3a5f; /* blue */
+    color:white;
+    padding:50px 20px;
+    text-align:center;
+  }
+
+  header h1 {
+    margin:0;
+    font-size:2.8em;
+  }
+
+  header p {
+    margin-top:10px;
+    font-size:1.2em;
+  }
+
+  section {
+    padding:40px 20px;
+    max-width:1000px;
+    margin:auto;
+  }
+
+  h2 {
+    color:#1e3a5f;
+  }
+
+  .services {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+    margin-top:20px;
+  }
+
+  .card {
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 4px 8px rgba(0,0,0,0.1);
+  }
+
+  .price {
+    font-size:1.4em;
+    color:#1e3a5f;
+    font-weight:bold;
+  }
+
+  .cta {
+    text-align:center;
+    margin-top:40px;
+  }
+
+  .cta a {
+    background:#1e3a5f;
+    color:white;
+    padding:15px 30px;
+    border-radius:10px;
+    text-decoration:none;
+    font-size:1.2em;
+  }
+
+  footer {
+    background:#d6d0c6;
+    text-align:center;
+    padding:20px;
+    margin-top:40px;
+    font-size:0.9em;
+  }
+
+  img.qr {
+    max-width:160px;
+    margin-top:20px;
+  }
+
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>FreshBin Pros</h1>
+  <p>Premium Trash Can Cleaning – No Smell. No Bugs. Just Clean.</p>
+</header>
+
+<section>
+  <h2>Our Services</h2>
+
+  <div class="services">
+
+    <div class="card">
+      <h3>Standard Bin Cleaning</h3>
+      <p>Full inside & outside pressure wash + deodorizing.</p>
+      <p class="price">$30 per bin</p>
+    </div>
+
+    <div class="card">
+      <h3>Deep Clean</h3>
+      <p>For heavy buildup, strong odors, or neglected bins.</p>
+      <p class="price">$40 per bin</p>
+    </div>
+
+    <div class="card">
+      <h3>Monthly Plan</h3>
+      <p>Keep your bins clean all year with scheduled service.</p>
+      <p class="price">$25 per bin / month</p>
+    </div>
+
+    <div class="card">
+      <h3>Commercial Cleaning</h3>
+      <p>Dumpster and business trash bin cleaning services.</p>
+      <p class="price">$60+ per unit</p>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <h2>Book Now</h2>
+  <p>Call or text to schedule your cleaning today:</p>
+  <h3>(555) 123-4567</h3>
+
+  <div class="cta">
+    <a href="tel:5551234567">Call Now</a>
+  </div>
+
+  <p>Scan to visit our website:</p>
+
+  <img class="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://freshbinpros.com" alt="QR Code">
+
+</section>
+
+<footer>
+  &copy; 2026 FreshBin Pros | Professional Bin Cleaning Service
+</footer>
+
+</body>
+</html>
