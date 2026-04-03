@@ -6,7 +6,7 @@
 <title>ATKFreshBin</title>
 <style>
 html { scroll-behavior: smooth; }
-body { margin:0; font-family:'Segoe UI', Arial; background:#000; color:white; overflow-x:hidden; cursor:none; perspective:1000px; }
+body { margin:0; font-family:'Segoe UI', Arial; background:#000; color:white; overflow-x:hidden; cursor:default; perspective:1000px; }
 
 /* PARALLAX BACKGROUND */
 #parallax-bg {
@@ -44,7 +44,7 @@ h1 { font-size:64px; color:#0ff; text-shadow:0 0 15px #0ff, 0 0 30px #00f, 0 0 5
 .card h2 { font-size:24px; margin-bottom:10px; }
 .card p { font-size:18px; margin-bottom:20px; }
 
-/* BUTTONS */
+/* BUTTONS WITH LIGHT TRAILS */
 button { padding:15px 30px; border:none; border-radius:15px; color:white; font-weight:bold; cursor:pointer; transition:0.4s; font-size:16px; box-shadow:0 0 15px #0ff, 0 0 25px #00f; background:#000; position:relative; overflow:hidden; }
 button:hover { transform:scale(1.1); box-shadow:0 0 50px #0ff, 0 0 70px #0ff, 0 0 90px #00f; }
 button::after { content:"💧"; position:absolute; top:-10px; left:50%; transform:translateX(-50%); opacity:0; transition:0.3s; }
@@ -63,7 +63,11 @@ input::placeholder { color:#aaa; }
 footer { text-align:center; padding:25px; opacity:0.7; font-size:14px; }
 
 /* CONFIRMATION POPUP */
-#confirmation { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#111; border:2px solid #0ff; padding:40px; border-radius:20px; box-shadow:0 0 25px #0ff,0 0 40px #00f; text-align:center; z-index:99999; }
+#confirmation {
+    display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%);
+    background:#111; border:2px solid #0ff; padding:40px; border-radius:20px;
+    box-shadow:0 0 25px #0ff,0 0 40px #00f; text-align:center; z-index:99999;
+}
 #confirmation h2 { color:#0ff; margin-bottom:20px; }
 
 /* RAINDROPS */
@@ -74,8 +78,6 @@ footer { text-align:center; padding:25px; opacity:0.7; font-size:14px; }
 .ficon { position:fixed; font-size:24px; color:#0ff; opacity:0.2; animation:floaty 8s infinite alternate; pointer-events:none; }
 @keyframes floaty { 0% { transform:translateY(0);} 100% { transform:translateY(-30px);} }
 
-/* CURSOR TRAILS */
-.cursor-trail { position:fixed; pointer-events:none; width:12px; height:12px; border-radius:50%; background:rgba(0,255,255,0.8); box-shadow:0 0 12px #0ff,0 0 24px #0ff; z-index:10000; mix-blend-mode:screen; transform:translate(-50%, -50%); transition:transform 0.1s linear, opacity 0.2s linear; opacity:0; }
 </style>
 </head>
 <body>
@@ -92,11 +94,6 @@ footer { text-align:center; padding:25px; opacity:0.7; font-size:14px; }
 <div class="ficon" style="top:30%; left:70%;">🛠</div>
 <div class="ficon" style="top:60%; left:40%;">🌿</div>
 <div class="ficon" style="top:80%; left:20%;">🗑</div>
-
-<!-- CURSOR TRAIL ELEMENTS -->
-<div id="cursorTrail1" class="cursor-trail"></div>
-<div id="cursorTrail2" class="cursor-trail"></div>
-<div id="cursorTrail3" class="cursor-trail"></div>
 
 <!-- NAV -->
 <nav>
@@ -160,29 +157,22 @@ footer { text-align:center; padding:25px; opacity:0.7; font-size:14px; }
 </footer>
 
 <script>
-// PARALLAX
+// PARALLAX MOVEMENT
 const layers=document.querySelectorAll('.layer');
 window.addEventListener('scroll',()=>{ const top=window.scrollY; layers.forEach((l,i)=>{ l.style.transform=`translateY(${top*(0.1*i)}px)`; }); });
 
 // RAINDROPS
+const drops=[];
 for(let i=0;i<60;i++){
-    const drop=document.createElement('div'); drop.className='raindrop';
-    drop.style.left=Math.random()*100+'vw'; drop.style.animationDuration=(Math.random()*4+3)+'s';
-    drop.style.height=(Math.random()*30+20)+'px'; drop.style.width=(Math.random()*6+4)+'px';
+    const drop=document.createElement('div');
+    drop.className='raindrop';
+    drop.style.left=Math.random()*100+'vw';
+    drop.style.animationDuration=(Math.random()*4+3)+'s';
+    drop.style.height=(Math.random()*30+20)+'px';
+    drop.style.width=(Math.random()*6+4)+'px';
     document.body.appendChild(drop);
+    drops.push(drop);
 }
-
-// CURSOR TRAILS
-const trails=[...document.querySelectorAll('.cursor-trail')];
-document.addEventListener('mousemove', e=>{
-    trails.forEach((t,i)=>{ 
-        setTimeout(()=>{ 
-            t.style.transform=`translate(${e.clientX}px,${e.clientY}px)`; 
-            t.style.opacity=1; 
-            setTimeout(()=>t.style.opacity=0,400); 
-        }, i*50);
-    });
-});
 
 // SERVICE FORM
 function showForm(service){
@@ -202,6 +192,5 @@ document.getElementById('bookingForm').addEventListener('submit', function(e){
     .finally(()=>setTimeout(()=>{ window.location.href = "https://cash.app/$Taeski09"; },1500));
 });
 </script>
-
 </body>
 </html>
