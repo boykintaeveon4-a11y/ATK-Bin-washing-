@@ -3,34 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A.T.K FreshBin - $10M Style</title>
+<title>A.T.K FreshBin - $2M Style</title>
 <style>
 html { scroll-behavior: smooth; }
-body { margin:0; font-family:'Segoe UI', Arial; background:#000; color:white; overflow-x:hidden; }
+body { margin:0; font-family:'Segoe UI', Arial; background:#111; color:#eee; overflow-x:hidden; }
 
 /* NAVBAR */
 nav { position:sticky; top:0; background:rgba(0,0,0,0.85); padding:15px; text-align:center; z-index:1000; border-bottom:2px solid #00c6ff; animation:pulseBorder 2s infinite alternate; }
-nav a { color:white; margin:0 15px; text-decoration:none; font-weight:bold; }
+nav a { color:#eee; margin:0 15px; text-decoration:none; font-weight:bold; }
 
 /* NEON FLICKER ANIMATION */
 @keyframes flicker {
-  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { text-shadow:0 0 5px #00c6ff, 0 0 10px #3399ff, 0 0 20px #00c6ff; }
-  20%, 24%, 55% { text-shadow:none; }
+  0%,19%,21%,23%,25%,54%,56%,100% { text-shadow:0 0 5px #00c6ff,0 0 10px #00c6ff,0 0 20px #00c6ff; }
+  20%,24%,55% { text-shadow:none; }
 }
 .flicker { animation: flicker 2s infinite; }
 
 /* HEADER */
-header { text-align:center; padding:60px 20px; border:2px solid #00c6ff; border-radius:20px; animation:pulseBorder 2s infinite alternate; }
-h1 { font-size:50px; text-shadow:0 0 20px #00c6ff,0 0 30px #3399ff; }
-.subtitle { color:#00c6ff; font-size:22px; text-shadow:0 0 10px #00c6ff; }
+header { text-align:center; padding:60px 20px; border:2px solid #00c6ff; border-radius:20px; animation:pulseBorder 2s infinite alternate; background:#222; }
+h1 { font-size:50px; color:#eee; text-shadow:0 0 20px #00c6ff,0 0 30px #00c6ff; }
+.subtitle { color:#ccc; font-size:22px; text-shadow:0 0 10px #00c6ff; }
 
 /* CARDS */
 .container { display:flex; justify-content:center; gap:25px; flex-wrap:wrap; padding:20px; }
-.card { background:#111; padding:30px; border-radius:25px; width:280px; text-align:center; transition:0.4s; box-shadow:0 0 25px #00c6ff; border:2px solid #00c6ff; animation:pulseBorder 3s infinite alternate; position: relative; overflow:hidden; transform-style: preserve-3d; }
-.card:hover { transform:translateY(-12px) scale(1.08) rotateX(2deg) rotateY(2deg); box-shadow:0 0 35px #00c6ff,0 0 50px #66ccff; }
+.card { background:#222; padding:30px; border-radius:25px; width:280px; text-align:center; transition:0.4s; box-shadow:0 0 25px #00c6ff; border:2px solid #00c6ff; position:relative; overflow:hidden; }
+.card:hover { transform:translateY(-12px) scale(1.08); box-shadow:0 0 35px #00c6ff,0 0 50px #3399ff; }
 
-/* SERVICE ICON */
-.card-icon { font-size:40px; margin-bottom:15px; display:block; animation:iconPulse 2s infinite alternate; color:#00c6ff; transform-style: preserve-3d; }
+/* CARD ICONS */
+.card-icon { font-size:50px; display:block; margin-bottom:15px; color:#00c6ff; animation: iconPulse 2s infinite alternate; }
+@keyframes iconPulse { 0% { transform:scale(1); } 50% { transform:scale(1.2); } 100% { transform:scale(1); } }
 
 /* PRICE */
 .price { color:#00c6ff; font-size:30px; }
@@ -39,41 +40,36 @@ h1 { font-size:50px; text-shadow:0 0 20px #00c6ff,0 0 30px #3399ff; }
 button { padding:15px 25px; border:none; border-radius:15px; color:white; font-weight:bold; cursor:pointer; transition:0.4s; box-shadow:0 0 15px #00c6ff; font-size:16px; position:relative; overflow:hidden; }
 .led-button { background:linear-gradient(45deg,#3399ff,#00c6ff); box-shadow:0 0 10px #00c6ff,0 0 15px #3399ff; }
 .led-button:hover { transform:scale(1.12); box-shadow:0 0 25px #00c6ff,0 0 35px #3399ff,0 0 50px #66ccff; animation: glow 1s infinite alternate; }
-.led-button::after { content:'✨'; position:absolute; top:0; left:50%; transform:translateX(-50%); font-size:20px; animation:sparkle 1.2s infinite; }
+@keyframes glow { 0% { box-shadow:0 0 25px #00c6ff,0 0 35px #3399ff; } 100% { box-shadow:0 0 35px #00c6ff,0 0 50px #3399ff; } }
 
-@keyframes glow { 0% { box-shadow:0 0 25px #00c6ff,0 0 35px #3399ff; } 100% { box-shadow:0 0 35px #3399ff,0 0 50px #66ccff; } }
-@keyframes sparkle { 0%,100% { opacity:0; transform:translate(-50%,0) scale(1); } 50% { opacity:1; transform:translate(-50%,-5px) scale(1.2); } }
-@keyframes iconPulse { 0% { transform: scale(1) rotateX(0deg) rotateY(0deg); } 50% { transform: scale(1.2) rotateX(3deg) rotateY(3deg); } 100% { transform: scale(1) rotateX(0deg) rotateY(0deg); } }
+/* ANIMATED EMOJIS */
+.emoji { position:absolute; font-size:24px; animation: floatEmoji 4s infinite alternate; }
+@keyframes floatEmoji { 0% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-15px) rotate(15deg); } 100% { transform: translateY(0) rotate(-15deg); } }
 
 /* GALLERY */
 .gallery { display:flex; gap:15px; overflow-x:auto; padding:20px; }
-.gallery img { width:240px; border-radius:15px; transition:0.4s; border:2px solid #00c6ff; animation:pulseBorder 4s infinite alternate; }
+.gallery img { width:240px; border-radius:15px; transition:0.4s; border:2px solid #00c6ff; }
 .gallery img:hover { transform:scale(1.12); }
 
 /* MAP */
-.map-container { position:relative; display:inline-block; border:2px solid #00c6ff; border-radius:15px; animation:pulseBorder 4s infinite alternate; overflow:hidden; }
-.map-container:hover::after { content:'✨'; position:absolute; top:10px; right:10px; font-size:20px; animation:sparkle 1s infinite; }
+.map-container { position:relative; display:inline-block; border:2px solid #00c6ff; border-radius:15px; overflow:hidden; }
 
 /* SECTION TITLES */
 .section-title { text-align:center; margin-top:50px; font-size:28px; color:#00c6ff; }
 .section-title.flicker { animation:flicker 2s infinite; }
 
 /* CHECKOUT FORM */
-#checkout { display:none; text-align:center; padding:50px; border-top:2px solid #00c6ff; animation:pulseBorder 2s infinite alternate; background:#111; border-radius:20px; box-shadow:0 0 50px #00c6ff; }
-input, select { padding:14px; margin:10px; border-radius:12px; border:none; width:240px; }
-
-/* HIDE DATE/TIME VISUALLY */
-input[type=date], input[type=time] { display:none; }
+#checkout { display:none; text-align:center; padding:50px; border-top:2px solid #00c6ff; background:#222; border-radius:20px; box-shadow:0 0 50px #00c6ff; }
+input, select { padding:14px; margin:10px; border-radius:12px; border:none; width:240px; background:#111; color:#eee; }
 
 /* CONFIRMATION POPUP */
 #confirmation { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
- background:#111; border:2px solid #00c6ff; padding:40px; border-radius:20px;
+ background:#222; border:2px solid #00c6ff; padding:40px; border-radius:20px;
  box-shadow:0 0 25px #00c6ff,0 0 40px #3399ff; text-align:center; z-index:99999; }
 #confirmation h2 { color:#00c6ff; margin-bottom:20px; }
 
 /* ANIMATED BORDER PULSE */
-@keyframes pulseBorder { 0% { box-shadow:0 0 5px #00c6ff; } 50% { box-shadow:0 0 20px #00c6ff,0 0 35px #3399ff; } 100% { box-shadow:0 0 5px #00c6ff; }
-}
+@keyframes pulseBorder { 0% { box-shadow:0 0 5px #00c6ff; } 50% { box-shadow:0 0 20px #00c6ff,0 0 35px #3399ff; } 100% { box-shadow:0 0 5px #00c6ff; } }
 </style>
 </head>
 <body>
@@ -95,20 +91,23 @@ input[type=date], input[type=time] { display:none; }
 <!-- SERVICES -->
 <h2 id="services" class="section-title flicker">Our Services</h2>
 <div class="container">
-    <div class="card" id="card1">
+    <div class="card">
         <span class="card-icon">🗑️</span>
+        <span class="emoji" style="top:10px; left:10px;">✨</span>
         <h2>1 Bin Cleaning</h2>
         <p class="price">$30</p>
         <button class="led-button" onclick="showForm('1 Bin - $30')">Book & Pay</button>
     </div>
-    <div class="card" id="card2">
+    <div class="card">
         <span class="card-icon">🔥</span>
+        <span class="emoji" style="top:5px; right:15px;">💎</span>
         <h2>2 Bin Deal</h2>
         <p class="price">$50</p>
         <button class="led-button" onclick="showForm('2 Bins - $50')">Book & Pay</button>
     </div>
-    <div class="card" id="card3">
+    <div class="card">
         <span class="card-icon">🌿</span>
+        <span class="emoji" style="bottom:10px; left:20px;">⚡</span>
         <h2>Grass Cutting</h2>
         <p class="price">$25</p>
         <button class="led-button" onclick="showForm('Grass Cutting - $25')">Book & Pay</button>
