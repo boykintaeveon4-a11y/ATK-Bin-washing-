@@ -7,109 +7,78 @@
 
 <style>
 html { scroll-behavior: smooth; }
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(to bottom, #0b1f3a, #061326);
-    color: white;
-}
+body { margin: 0; font-family: 'Segoe UI', Arial, sans-serif; background: #0b1f3a; color: white; overflow-x: hidden; }
+/* Snowflake/LED */
+@keyframes drift { 0% {transform:translateY(0) translateX(0);} 50% {transform:translateY(50vh) translateX(20px);} 100% {transform:translateY(100vh) translateX(-20px);} }
+.snowflake { position: fixed; top:-10px; color:#00f0ff; font-size:1.5em; opacity:0.8; z-index:9999; animation: drift linear infinite; }
 
 /* NAVBAR */
-nav {
-    position: sticky;
-    top: 0;
-    background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(10px);
-    padding: 15px;
-    text-align: center;
-    z-index: 1000;
-}
-nav a {
-    color: white;
-    margin: 0 15px;
-    text-decoration: none;
-    font-weight: bold;
-}
+nav { position: sticky; top:0; background: rgba(0,0,0,0.6); backdrop-filter: blur(15px); padding: 15px; text-align:center; z-index:1000; }
+nav a { color:white; margin:0 15px; text-decoration:none; font-weight:bold; }
 
 /* HEADER */
-header {
-    text-align: center;
-    padding: 60px 20px;
-    animation: fadeIn 1s ease-in;
-}
-h1 { font-size: 44px; }
-.subtitle { color: #4da6ff; }
+header { text-align:center; padding:60px 20px; animation: fadeIn 1s ease-in; }
+h1 { font-size:50px; text-shadow:0 0 10px #00f0ff,0 0 20px #00c6ff; }
+.subtitle { color:#00c6ff; font-size:22px; text-shadow:0 0 5px #00f0ff; }
 
 /* CARDS */
-.container {
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-    flex-wrap: wrap;
-    padding: 20px;
-}
-.card {
-    background: #122b52;
-    padding: 25px;
-    border-radius: 20px;
-    width: 260px;
-    text-align: center;
-    transition: 0.3s;
-    box-shadow: 0 0 20px rgba(0,0,0,0.4);
-}
-.card:hover {
-    transform: translateY(-8px) scale(1.05);
-    box-shadow: 0 0 25px #1e90ff;
-}
-.price { color: #4da6ff; font-size: 28px; }
+.container { display:flex; justify-content:center; gap:25px; flex-wrap:wrap; padding:20px; }
+.card { background:#122b52; padding:30px; border-radius:25px; width:280px; text-align:center; transition:0.4s; box-shadow:0 0 25px rgba(0,255,255,0.6);}
+.card:hover { transform:translateY(-12px) scale(1.08); box-shadow:0 0 35px #00f0ff,0 0 50px #00c6ff; }
+.price { color:#00f0ff; font-size:30px; }
 
-/* BUTTON */
-button {
-    padding: 12px 22px;
-    background: linear-gradient(45deg, #1e90ff, #00c6ff);
-    border: none;
-    border-radius: 12px;
-    color: white;
-    cursor: pointer;
-    transition: 0.3s;
-}
-button:hover { transform: scale(1.08); }
+/* BUTTONS */
+button { padding:15px 25px; background:linear-gradient(45deg,#00c6ff,#00f0ff); border:none; border-radius:15px; color:white; font-weight:bold; cursor:pointer; box-shadow:0 0 15px #00f0ff; transition:0.4s; }
+button:hover { transform:scale(1.1); box-shadow:0 0 25px #00f0ff,0 0 35px #00c6ff; }
 
 /* GALLERY */
-.gallery {
-    display: flex;
-    gap: 12px;
-    overflow-x: auto;
-    padding: 20px;
-}
-.gallery img {
-    width: 220px;
-    border-radius: 12px;
-    transition: 0.3s;
-}
-.gallery img:hover { transform: scale(1.1); }
+.gallery { display:flex; gap:15px; overflow-x:auto; padding:20px; }
+.gallery img { width:240px; border-radius:15px; transition:0.4s; }
+.gallery img:hover { transform:scale(1.12); }
 
 /* SECTION TITLES */
-.section-title { text-align: center; margin-top: 40px; }
+.section-title { text-align:center; margin-top:50px; font-size:28px; color:#00f0ff; }
 
 /* CHECKOUT FORM */
-#checkout {
-    display: none;
-    text-align: center;
-    padding: 40px;
-    animation: fadeIn 0.7s ease-in;
-}
-input, select { padding: 12px; margin: 8px; border-radius: 10px; border: none; width: 220px; }
+#checkout { display:none; text-align:center; padding:50px; animation: fadeIn 0.7s ease-in; border-top:2px solid #00f0ff; }
+input, select { padding:14px; margin:10px; border-radius:12px; border:none; width:240px; }
 
 /* FOOTER */
-footer { text-align: center; padding: 20px; opacity: 0.7; }
+footer { text-align:center; padding:25px; opacity:0.7; }
 
-/* ANIMATION */
-@keyframes fadeIn { from {opacity:0; transform: translateY(20px);} to {opacity:1; transform: translateY(0);} }
+/* CONFIRMATION POPUP */
+#confirmation {
+    display:none;
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: #061326;
+    border: 2px solid #00f0ff;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 0 25px #00f0ff, 0 0 40px #00c6ff;
+    text-align:center;
+    z-index: 99999;
+}
+#confirmation h2 { color:#00f0ff; margin-bottom:20px; }
+#confirmation button { margin-top:20px; }
 </style>
 </head>
 
 <body>
+
+<!-- SNOWFLAKES -->
+<script>
+for(let i=0;i<50;i++){
+    let flake=document.createElement('div');
+    flake.className='snowflake';
+    flake.style.left=Math.random()*100+'vw';
+    flake.style.fontSize=(Math.random()*20+10)+'px';
+    flake.style.animationDuration=(Math.random()*5+5)+'s';
+    flake.innerHTML='❄';
+    document.body.appendChild(flake);
+}
+</script>
 
 <!-- NAV -->
 <nav>
@@ -131,17 +100,17 @@ footer { text-align: center; padding: 20px; opacity: 0.7; }
 <div class="card">
     <h2>1 Bin Cleaning</h2>
     <p class="price">$30</p>
-    <button onclick="selectService('1 Bin - $30')">Book Now</button>
+    <button onclick="showForm('1 Bin - $30')">Book & Pay</button>
 </div>
 <div class="card">
     <h2>🔥 2 Bin Deal</h2>
     <p class="price">$50</p>
-    <button onclick="selectService('2 Bins - $50')">Book Now</button>
+    <button onclick="showForm('2 Bins - $50')">Book & Pay</button>
 </div>
 <div class="card">
     <h2>Grass Cutting</h2>
     <p class="price">$25</p>
-    <button onclick="selectService('Grass Cutting - $25')">Book Now</button>
+    <button onclick="showForm('Grass Cutting - $25')">Book & Pay</button>
 </div>
 </div>
 
@@ -157,34 +126,29 @@ footer { text-align: center; padding: 20px; opacity: 0.7; }
 <!-- MAP -->
 <h2 class="section-title">Service Area</h2>
 <div style="text-align:center;">
-<iframe 
-width="90%" 
-height="260" 
-style="border:0;border-radius:12px;" 
-src="https://maps.google.com/maps?q=Tulsa,Oklahoma&z=11&output=embed">
-</iframe>
+<iframe width="90%" height="260" style="border:0;border-radius:12px;" 
+src="https://maps.google.com/maps?q=Tulsa,Oklahoma&z=11&output=embed"></iframe>
 </div>
 
 <!-- CHECKOUT -->
 <div id="checkout">
-    <h2>Book Your Service</h2>
+    <h2>Book & Pay</h2>
     <p id="serviceChosen"></p>
-
-    <form action="https://formspree.io/f/xeeprrlv" method="POST">
-        <input type="text" name="Name" placeholder="Name" required><br>
-        <input type="text" name="Address" placeholder="Address" required><br>
-        <input type="text" name="Phone" placeholder="Phone" required><br>
-        <input type="date" name="Date" required><br>
-        <input type="time" name="Time" required><br>
-        <input type="hidden" id="serviceInput" name="Service">
-        <select name="PaymentMethod">
-            <option>Cash App</option>
-            <option>PayPal</option>
-            <option>Venmo</option>
-            <option>Apple Pay</option>
-        </select><br>
-        <button type="submit">Send Booking</button>
+    <form id="bookingForm" action="https://formspree.io/f/xeeprrlv" method="POST" target="_blank">
+        <input type="text" name="name" placeholder="Name" required><br>
+        <input type="text" name="address" placeholder="Address" required><br>
+        <input type="text" name="phone" placeholder="Phone" required><br>
+        <input type="date" name="date" required><br>
+        <input type="time" name="time" required><br>
+        <input type="hidden" name="service" id="serviceInput">
+        <button type="submit">Submit & Pay Cash App</button>
     </form>
+</div>
+
+<!-- CONFIRMATION POPUP -->
+<div id="confirmation">
+    <h2 id="confirmMessage"></h2>
+    <p>Redirecting to Cash App...</p>
 </div>
 
 <footer>
@@ -192,12 +156,34 @@ src="https://maps.google.com/maps?q=Tulsa,Oklahoma&z=11&output=embed">
 </footer>
 
 <script>
-function selectService(service) {
-    document.getElementById("checkout").style.display = "block";
-    document.getElementById("serviceChosen").innerText = "Selected: " + service;
+function showForm(service){
+    document.getElementById("checkout").style.display="block";
+    document.getElementById("serviceChosen").innerText="Selected Service: " + service;
     document.getElementById("serviceInput").value = service;
-    document.getElementById("checkout").scrollIntoView({ behavior: "smooth" });
+    window.scrollTo({top: document.body.scrollHeight, behavior:'smooth'});
 }
+
+// Form submission with confirmation popup and Cash App redirect
+document.getElementById('bookingForm').addEventListener('submit', function(e){
+    e.preventDefault(); // prevent default submit
+    const service = document.getElementById('serviceInput').value;
+    
+    // Show confirmation popup
+    document.getElementById('confirmMessage').innerText = `Thanks! Your booking for ${service} is confirmed.`;
+    document.getElementById('confirmation').style.display='block';
+    
+    // Submit to Formspree
+    fetch(this.action, {
+        method: "POST",
+        body: new FormData(this),
+        headers: { 'Accept': 'application/json' }
+    }).finally(function(){
+        // Redirect to Cash App after 1.2s
+        setTimeout(function(){
+            window.location.href = "https://cash.app/$Taeski09";
+        }, 1200);
+    });
+});
 </script>
 
 </body>
