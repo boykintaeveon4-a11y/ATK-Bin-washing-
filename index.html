@@ -4,129 +4,134 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ATKFreshBin</title>
-
 <style>
 html { scroll-behavior: smooth; }
-body { margin:0; font-family:'Segoe UI', Arial; background:#000; color:white; overflow-x:hidden; cursor:default; }
+body { margin:0; font-family:'Segoe UI', Arial; background:#000; color:white; overflow-x:hidden; cursor:none; perspective:1000px; }
+
+/* PARALLAX BACKGROUND */
+#parallax-bg {
+    position:fixed; top:0; left:0; width:100%; height:100%; overflow:hidden; z-index:-1;
+}
+.layer { position:absolute; width:200%; height:200%; background-repeat:repeat; opacity:0.1; mix-blend-mode:screen; }
+.layer1 { background: radial-gradient(circle, #00f 5%, transparent 20%); }
+.layer2 { background: radial-gradient(circle, #0ff 3%, transparent 20%); }
+.layer3 { background: radial-gradient(circle, #00aaff 2%, transparent 20%); }
 
 /* NAVBAR */
-nav { position:sticky; top:0; background:rgba(0,0,0,0.8); backdrop-filter:blur(10px); padding:15px; text-align:center; z-index:1000; }
-nav a { color:white; margin:0 15px; text-decoration:none; font-weight:bold; transition:0.3s; }
-nav a:hover { text-shadow:0 0 10px #fff; }
+nav { position:sticky; top:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(12px); padding:15px; text-align:center; z-index:1000; }
+nav a { color:white; margin:0 20px; text-decoration:none; font-weight:bold; font-size:16px; transition:0.3s; }
+nav a:hover { color:#0ff; }
 
 /* HEADER */
-header { text-align:center; padding:60px 20px; }
-h1 { font-size:50px; text-shadow:0 0 15px #fff,0 0 25px #ccc; }
-.subtitle { color:#ccc; font-size:22px; text-shadow:0 0 8px #fff; }
+header { text-align:center; padding:100px 20px; animation: shimmer 4s infinite linear; }
+h1 { font-size:64px; color:#0ff; text-shadow:0 0 15px #0ff, 0 0 30px #00f, 0 0 50px #0ff; animation: shimmer 3s infinite linear; }
+.subtitle { color:#ccc; font-size:26px; text-shadow:0 0 6px #0ff; }
 
-/* CARDS */
-.container { display:flex; justify-content:center; gap:25px; flex-wrap:wrap; padding:20px; }
-.card { background:#111; padding:30px; border-radius:25px; width:280px; text-align:center; transition:0.4s; box-shadow:0 0 20px #fff; }
-.card:hover { transform:translateY(-12px) scale(1.08); box-shadow:0 0 30px #fff,0 0 40px #ccc; }
-.price { color:#fff; font-size:30px; }
+/* SHIMMER EFFECT */
+@keyframes shimmer {
+  0% { text-shadow: 0 0 10px #0ff, 0 0 20px #00f, 0 0 30px #0ff; }
+  50% { text-shadow: 0 0 20px #0ff, 0 0 40px #0ff, 0 0 60px #0ff; }
+  100% { text-shadow: 0 0 10px #0ff, 0 0 20px #00f, 0 0 30px #0ff; }
+}
+
+/* SERVICES */
+.container { display:flex; justify-content:center; gap:30px; flex-wrap:wrap; padding:30px; }
+.card { background:#111; padding:30px; border-radius:25px; width:300px; text-align:center; transition:0.4s; box-shadow:0 0 20px #00f; position:relative; overflow:hidden; }
+.card::after { content:""; position:absolute; top:0; left:0; width:100%; height:100%; border-radius:25px; background: linear-gradient(120deg, rgba(0,255,255,0.1), rgba(0,255,255,0)); pointer-events:none; animation:shine 3s infinite linear; }
+@keyframes shine { 0% {transform:translateX(-100%);} 100% {transform:translateX(100%);} }
+.card:hover { transform:translateY(-12px) scale(1.05); box-shadow:0 0 40px #0ff, 0 0 60px #00f; }
+.price { color:#0ff; font-size:28px; margin:10px 0; }
+.card h2 { font-size:24px; margin-bottom:10px; }
+.card p { font-size:18px; margin-bottom:20px; }
 
 /* BUTTONS */
-button { padding:15px 25px; border:none; border-radius:15px; color:white; font-weight:bold; cursor:pointer; transition:0.4s; font-size:16px; background:#111; box-shadow:0 0 10px #fff; }
-.led-button { box-shadow:0 0 15px #fff,0 0 25px #ccc; }
-.led-button:hover { transform:scale(1.12); box-shadow:0 0 25px #fff,0 0 40px #ccc,0 0 60px #fff; animation: glow 1s infinite alternate; }
-@keyframes glow { 0% { box-shadow:0 0 20px #fff,0 0 30px #ccc; } 100% { box-shadow:0 0 35px #fff,0 0 50px #ccc; } }
-
-/* GALLERY */
-.gallery { display:flex; gap:15px; overflow-x:auto; padding:20px; }
-.gallery img { width:240px; border-radius:15px; transition:0.4s; }
-.gallery img:hover { transform:scale(1.12); filter: brightness(1.2); }
+button { padding:15px 30px; border:none; border-radius:15px; color:white; font-weight:bold; cursor:pointer; transition:0.4s; font-size:16px; box-shadow:0 0 15px #0ff, 0 0 25px #00f; background:#000; position:relative; overflow:hidden; }
+button:hover { transform:scale(1.1); box-shadow:0 0 50px #0ff, 0 0 70px #0ff, 0 0 90px #00f; }
+button::after { content:"💧"; position:absolute; top:-10px; left:50%; transform:translateX(-50%); opacity:0; transition:0.3s; }
+button:hover::after { opacity:1; top:10px; animation:drip 0.7s ease forwards; }
+@keyframes drip { 0% { transform:translateX(-50%) translateY(0); opacity:1; } 100% { transform:translateX(-50%) translateY(20px); opacity:0; } }
 
 /* SECTION TITLES */
-.section-title { text-align:center; margin-top:50px; font-size:28px; color:#fff; text-shadow:0 0 10px #fff; }
+.section-title { text-align:center; margin-top:50px; font-size:32px; color:#0ff; }
 
 /* CHECKOUT FORM */
-#checkout { display:none; text-align:center; padding:50px; border-top:2px solid #fff; }
-input, select { padding:14px; margin:10px; border-radius:12px; border:none; width:240px; background:#111; color:white; box-shadow:0 0 10px #fff; }
+#checkout { display:none; text-align:center; padding:50px; border-top:2px solid #0ff; }
+input, select { padding:14px; margin:10px; border-radius:12px; border:none; width:260px; background:#111; color:white; }
+input::placeholder { color:#aaa; }
 
 /* FOOTER */
-footer { text-align:center; padding:25px; opacity:0.7; }
+footer { text-align:center; padding:25px; opacity:0.7; font-size:14px; }
 
 /* CONFIRMATION POPUP */
-#confirmation {
-    display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%);
-    background:#111; border:2px solid #fff; padding:40px; border-radius:20px;
-    box-shadow:0 0 25px #fff,0 0 40px #ccc; text-align:center; z-index:99999;
-}
-#confirmation h2 { color:#fff; margin-bottom:20px; }
+#confirmation { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#111; border:2px solid #0ff; padding:40px; border-radius:20px; box-shadow:0 0 25px #0ff,0 0 40px #00f; text-align:center; z-index:99999; }
+#confirmation h2 { color:#0ff; margin-bottom:20px; }
 
-/* SNOWFLAKES */
-.snowflake { position:fixed; top:0; color:#fff; font-size:1.5em; opacity:0.8; z-index:9999; pointer-events:none; transition: transform 0.1s linear; }
+/* RAINDROPS */
+.raindrop { position:fixed; top:-50px; width:8px; height:25px; background:rgba(0,200,255,0.6); border-radius:50%; z-index:9999; pointer-events:none; animation:fall linear infinite; opacity:0.6; }
+@keyframes fall { 0% { transform:translateY(-50px); } 100% { transform:translateY(110vh); opacity:0; } }
+
+/* FLOATING ICONS */
+.ficon { position:fixed; font-size:24px; color:#0ff; opacity:0.2; animation:floaty 8s infinite alternate; pointer-events:none; }
+@keyframes floaty { 0% { transform:translateY(0);} 100% { transform:translateY(-30px);} }
+
+/* CURSOR TRAILS */
+.cursor-trail { position:fixed; pointer-events:none; width:12px; height:12px; border-radius:50%; background:rgba(0,255,255,0.8); box-shadow:0 0 12px #0ff,0 0 24px #0ff; z-index:10000; mix-blend-mode:screen; transform:translate(-50%, -50%); transition:transform 0.1s linear, opacity 0.2s linear; opacity:0; }
 </style>
 </head>
-
 <body>
 
-<!-- SNOWFLAKES -->
-<script>
-const flakes=[];
-for(let i=0;i<60;i++){
-    const flake=document.createElement('div');
-    flake.className='snowflake';
-    flake.style.left=Math.random()*100+'vw';
-    flake.style.top=Math.random()*100+'vh';
-    flake.style.fontSize=(Math.random()*20+10)+'px';
-    flake.innerHTML='❄';
-    document.body.appendChild(flake);
-    flakes.push({el:flake,x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,dx:Math.random()*2-1,dy:Math.random()*1.5+0.5});
-}
-document.addEventListener('mousemove', e=>{ flakes.forEach(f=>f.dx+=(e.clientX/window.innerWidth-0.5)*0.05); });
-function animateFlakes(){ flakes.forEach(f=>{ f.x+=f.dx; f.y+=f.dy; if(f.y>window.innerHeight) f.y=-10; if(f.x>window.innerWidth) f.x=0; if(f.x<0) f.x=window.innerWidth; f.el.style.transform=`translate(${f.x}px,${f.y}px)`; }); requestAnimationFrame(animateFlakes); }
-animateFlakes();
-</script>
+<!-- PARALLAX BACKGROUND -->
+<div id="parallax-bg">
+    <div class="layer layer1"></div>
+    <div class="layer layer2"></div>
+    <div class="layer layer3"></div>
+</div>
+
+<!-- FLOATING ICONS -->
+<div class="ficon" style="top:10%; left:15%;">💧</div>
+<div class="ficon" style="top:30%; left:70%;">🛠</div>
+<div class="ficon" style="top:60%; left:40%;">🌿</div>
+<div class="ficon" style="top:80%; left:20%;">🗑</div>
+
+<!-- CURSOR TRAIL ELEMENTS -->
+<div id="cursorTrail1" class="cursor-trail"></div>
+<div id="cursorTrail2" class="cursor-trail"></div>
+<div id="cursorTrail3" class="cursor-trail"></div>
 
 <!-- NAV -->
 <nav>
-    <a href="#">Home</a>
-    <a href="#services">Services</a>
-    <a href="#gallery">Photos</a>
-    <a href="#checkout">Book</a>
+    <a href="#">🏠 Home</a>
+    <a href="#services">🛠 Services</a>
+    <a href="#checkout">💳 Book</a>
 </nav>
 
 <!-- HEADER -->
 <header>
     <h1>ATKFreshBin</h1>
-    <p class="subtitle">Trash Bin Cleaning & Lawn Care</p>
+    <p class="subtitle">🗑 Trash Bin Cleaning & Lawn Care 🌿</p>
 </header>
 
 <!-- SERVICES -->
 <h2 id="services" class="section-title">Our Services</h2>
 <div class="container">
-<div class="card">
-    <h2>1 Bin Cleaning</h2>
-    <p class="price">$30</p>
-    <button class="led-button" onclick="showForm('1 Bin - $30')">Book & Pay</button>
-</div>
-<div class="card">
-    <h2>🔥 2 Bin Deal</h2>
-    <p class="price">$50</p>
-    <button class="led-button" onclick="showForm('2 Bins - $50')">Book & Pay</button>
-</div>
-<div class="card">
-    <h2>Grass Cutting</h2>
-    <p class="price">$25</p>
-    <button class="led-button" onclick="showForm('Grass Cutting - $25')">Book & Pay</button>
-</div>
-</div>
-
-<!-- GALLERY -->
-<h2 id="gallery" class="section-title">Before / After</h2>
-<div class="gallery">
-    <img src="images/before1.jpg" alt="Before Bin">
-    <img src="images/after1.jpg" alt="After Bin">
-    <img src="images/lawn1.jpg" alt="Lawn Before">
-    <img src="images/lawn2.jpg" alt="Lawn After">
-</div>
-
-<!-- MAP -->
-<h2 class="section-title">Service Area</h2>
-<div style="text-align:center;">
-<iframe width="90%" height="260" style="border:0;border-radius:12px;" 
-src="https://maps.google.com/maps?q=Tulsa,Oklahoma&z=11&output=embed"></iframe>
+    <div class="card">
+        <h2>1 Bin Cleaning 🗑</h2>
+        <p class="price">$30</p>
+        <p>✨ Sparkling clean every time</p>
+        <button onclick="showForm('1 Bin - $30')">Book & Pay 💸</button>
+    </div>
+    <div class="card">
+        <h2>2 Bin Deal 🔥</h2>
+        <p class="price">$50</p>
+        <p>💎 Save & clean two bins</p>
+        <button onclick="showForm('2 Bins - $50')">Book & Pay 💸</button>
+    </div>
+    <div class="card">
+        <h2>Grass Cutting 🌱</h2>
+        <p class="price">$25</p>
+        <p>💨 Quick & neat</p>
+        <button onclick="showForm('Grass Cutting - $25')">Book & Pay 💸</button>
+    </div>
 </div>
 
 <!-- CHECKOUT -->
@@ -140,7 +145,7 @@ src="https://maps.google.com/maps?q=Tulsa,Oklahoma&z=11&output=embed"></iframe>
         <input type="date" name="date" required><br>
         <input type="time" name="time" required><br>
         <input type="hidden" name="service" id="serviceInput">
-        <button type="submit" class="led-button">Submit & Pay Cash App</button>
+        <button type="submit">Submit & Pay Cash App 💸</button>
     </form>
 </div>
 
@@ -155,6 +160,30 @@ src="https://maps.google.com/maps?q=Tulsa,Oklahoma&z=11&output=embed"></iframe>
 </footer>
 
 <script>
+// PARALLAX
+const layers=document.querySelectorAll('.layer');
+window.addEventListener('scroll',()=>{ const top=window.scrollY; layers.forEach((l,i)=>{ l.style.transform=`translateY(${top*(0.1*i)}px)`; }); });
+
+// RAINDROPS
+for(let i=0;i<60;i++){
+    const drop=document.createElement('div'); drop.className='raindrop';
+    drop.style.left=Math.random()*100+'vw'; drop.style.animationDuration=(Math.random()*4+3)+'s';
+    drop.style.height=(Math.random()*30+20)+'px'; drop.style.width=(Math.random()*6+4)+'px';
+    document.body.appendChild(drop);
+}
+
+// CURSOR TRAILS
+const trails=[...document.querySelectorAll('.cursor-trail')];
+document.addEventListener('mousemove', e=>{
+    trails.forEach((t,i)=>{ 
+        setTimeout(()=>{ 
+            t.style.transform=`translate(${e.clientX}px,${e.clientY}px)`; 
+            t.style.opacity=1; 
+            setTimeout(()=>t.style.opacity=0,400); 
+        }, i*50);
+    });
+});
+
 // SERVICE FORM
 function showForm(service){
     document.getElementById("checkout").style.display="block";
@@ -163,14 +192,14 @@ function showForm(service){
     window.scrollTo({top: document.body.scrollHeight, behavior:'smooth'});
 }
 
-// FORM SUBMIT + POPUP + CASH APP
+// FORM SUBMIT + CASH APP
 document.getElementById('bookingForm').addEventListener('submit', function(e){
     e.preventDefault();
     const service = document.getElementById('serviceInput').value;
     document.getElementById('confirmMessage').innerText = `Thanks! Your booking for ${service} is confirmed.`;
     document.getElementById('confirmation').style.display='block';
     fetch(this.action,{method:"POST", body:new FormData(this), headers:{'Accept':'application/json'}})
-    .finally(()=>setTimeout(()=>{ window.location.href = "https://cash.app/$Taeski09"; },1200));
+    .finally(()=>setTimeout(()=>{ window.location.href = "https://cash.app/$Taeski09"; },1500));
 });
 </script>
 
