@@ -15,16 +15,16 @@
 
 <style>
 * { margin:0; padding:0; box-sizing:border-box; font-family: 'Roboto', sans-serif; }
-body { background:#fefefe; overflow-x:hidden; color:#111; position:relative; }
+body { background: linear-gradient(#001f4d, #003366); overflow-x:hidden; color:#fff; position:relative; }
 
-/* Falling blue flakes */
-.flake {
+/* Realistic snowflakes */
+.snowflake {
   position: fixed;
   top: -10px;
-  width: 6px; height: 6px;
-  background: #0077ff;
+  width: 4px; height: 4px;
+  background: #fff;
   border-radius: 50%;
-  opacity: 0.6;
+  opacity: 0.5;
   pointer-events: none;
   animation-name: fall;
   animation-timing-function: linear;
@@ -32,70 +32,53 @@ body { background:#fefefe; overflow-x:hidden; color:#111; position:relative; }
 @keyframes fall { to { transform: translateY(110vh); } }
 
 header {
-  background:#fff; padding:20px 40px; display:flex; justify-content:space-between; align-items:center;
-  box-shadow:0 2px 8px rgba(0,0,0,0.05); position:sticky; top:0; z-index:100;
+  background:#001f4d; padding:20px 40px; display:flex; justify-content:space-between; align-items:center;
+  box-shadow:0 2px 12px rgba(0,0,0,0.5); position:sticky; top:0; z-index:100;
 }
-header h1 { color:#0077ff; }
-nav a { text-decoration:none; margin-left:20px; color:#0077ff; font-weight:700; transition:0.3s; }
-nav a:hover { color:#0055cc; }
+header h1 { color:#00bfff; font-size:1.8rem; }
+nav a { text-decoration:none; margin-left:20px; color:#00bfff; font-weight:700; transition:0.3s; }
+nav a:hover { color:#80dfff; }
 
-/* Hero */
-.hero { height:90vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:0 20px; }
-.hero h2 { font-size:3rem; margin-bottom:20px; color:#0077ff; }
+/* Parallax hero */
+.hero { height:90vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:0 20px; background:transparent; }
+.hero h2 { font-size:3rem; margin-bottom:20px; color:#00bfff; text-shadow: 2px 2px 8px rgba(0,0,0,0.6); }
 .hero p { font-size:1.2rem; margin-bottom:30px; }
-.hero button { padding:15px 30px; font-size:1rem; background:#0077ff; color:#fff; border:none; border-radius:8px; cursor:pointer; transition:0.3s; }
-.hero button:hover { background:#0055cc; }
+.hero button { padding:15px 30px; font-size:1rem; background:#00bfff; color:#001f4d; border:none; border-radius:8px; cursor:pointer; transition:0.3s; }
+.hero button:hover { background:#0080c0; color:#fff; }
 
-/* Sliding service cards */
-.services-slider { display:flex; overflow-x:auto; scroll-behavior:smooth; gap:20px; padding:40px 20px; }
-.service-card { min-width:250px; background:#f5faff; border-radius:12px; padding:30px; text-align:center; box-shadow:0 5px 15px rgba(0,0,0,0.05); transition:0.3s; flex-shrink:0; }
-.service-card:hover { transform:translateY(-5px); box-shadow:0 10px 25px rgba(0,0,0,0.1); }
-.service-card h3 { color:#0077ff; margin-bottom:10px; }
+/* 3D Carousel services */
+.services-slider { display:flex; overflow-x:auto; scroll-behavior:smooth; gap:30px; padding:40px 20px; perspective:1000px; }
+.service-card { min-width:250px; background:#003366; border-radius:12px; padding:30px; text-align:center;
+  box-shadow:0 8px 20px rgba(0,0,0,0.7); transition:0.5s transform, 0.5s box-shadow; flex-shrink:0; color:#fff; }
+.service-card:hover { transform: rotateY(10deg) scale(1.05); box-shadow:0 15px 30px rgba(0,0,0,0.9); }
+.service-card h3 { color:#00bfff; margin-bottom:10px; }
 .service-card p { margin-bottom:15px; font-size:1.1rem; }
-.service-card button { padding:10px 20px; background:#0077ff; color:#fff; border:none; border-radius:6px; cursor:pointer; transition:0.3s; }
-.service-card button:hover { background:#0055cc; }
+.service-card button { padding:10px 20px; background:#00bfff; color:#001f4d; border:none; border-radius:6px; cursor:pointer; transition:0.3s; }
+.service-card button:hover { background:#0080c0; color:#fff; }
 
-/* Checkout */
+/* Checkout with floating labels */
 .checkout { max-width:500px; margin:0 auto; padding:60px 20px; text-align:center; }
-.checkout h2 { color:#0077ff; margin-bottom:20px; }
-.checkout form { display:flex; flex-direction:column; gap:15px; }
-.checkout input, .checkout select { padding:12px; border-radius:8px; border:1px solid #ccc; font-size:1rem; }
-.checkout button { padding:15px; font-size:1rem; border:none; border-radius:8px; background:#0077ff; color:#fff; cursor:pointer; transition:0.3s; }
-.checkout button:hover { background:#0055cc; }
+.checkout h2 { color:#00bfff; margin-bottom:20px; }
+.checkout form { display:flex; flex-direction:column; gap:25px; }
+.checkout .form-group { position:relative; }
+.checkout input, .checkout select { width:100%; padding:15px 12px; border-radius:8px; border:1px solid #ccc; font-size:1rem; background:#003366; color:#fff; }
+.checkout label { position:absolute; top:12px; left:15px; color:#ccc; transition:0.3s; pointer-events:none; }
+.checkout input:focus + label, .checkout input:not(:placeholder-shown) + label,
+.checkout select:focus + label, .checkout select:not([value='']) + label { top:-10px; left:12px; font-size:0.8rem; color:#00bfff; }
+.checkout button { padding:15px; font-size:1rem; border:none; border-radius:8px; background:#00bfff; color:#001f4d; cursor:pointer; transition:0.3s; }
+.checkout button:hover { background:#0080c0; color:#fff; }
 
-/* CashApp Button */
-.cashapp-button {
-  display:inline-block;
-  margin-top:10px;
-  padding:12px 25px;
-  background:#00c244;
-  color:#fff;
-  font-weight:700;
-  border-radius:8px;
-  text-decoration:none;
-  transition:0.3s;
-}
+/* CashApp & Apple Pay */
+.cashapp-button { display:inline-block; margin-top:10px; padding:12px 25px; background:#00c244; color:#fff; font-weight:700; border-radius:8px; text-decoration:none; transition:0.3s; }
 .cashapp-button:hover { background:#009f35; }
-
-/* Apple Pay Button */
-#apple-pay-button {
-  display:inline-block;
-  margin-top:10px;
-  padding:12px 25px;
-  background:black;
-  color:white;
-  font-weight:700;
-  border-radius:8px;
-  cursor:pointer;
-  transition:0.3s;
-}
+#apple-pay-button { display:inline-block; margin-top:10px; padding:12px 25px; background:black; color:white; font-weight:700; border-radius:8px; cursor:pointer; transition:0.3s; }
 #apple-pay-button:hover { background:#333; }
 
 /* Confirmation popup */
-.popup { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; }
-.popup-content { background:#fff; padding:40px; border-radius:12px; text-align:center; }
-.popup-content h3 { color:#0077ff; margin-bottom:20px; }
-.popup-content button { padding:10px 20px; border:none; border-radius:6px; background:#0077ff; color:#fff; cursor:pointer; }
+.popup { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); justify-content:center; align-items:center; }
+.popup-content { background:#003366; padding:40px; border-radius:12px; text-align:center; color:#fff; }
+.popup-content h3 { color:#00bfff; margin-bottom:20px; }
+.popup-content button { padding:10px 20px; border:none; border-radius:6px; background:#00bfff; color:#001f4d; cursor:pointer; }
 
 /* Map */
 .map-container { margin:60px 0; text-align:center; }
@@ -139,15 +122,27 @@ iframe { width:90%; height:400px; border:0; border-radius:12px; }
 <section class="checkout fade-in" id="checkout">
   <h2>Book Your Service</h2>
   <form id="orderForm">
-    <input type="text" placeholder="Full Name" required>
-    <input type="tel" placeholder="Phone Number" required>
-    <input type="text" placeholder="Address" required>
-    <select id="serviceSelect" required>
-      <option value="">Select Service</option>
-      <option value="Trash Bin Cleaning 1">Trash Bin Cleaning - 1 bin ($30)</option>
-      <option value="Trash Bin Cleaning 2">Trash Bin Cleaning - 2 bins ($50)</option>
-      <option value="Grass Cutting">Grass Cutting - $25</option>
-    </select>
+    <div class="form-group">
+      <input type="text" placeholder=" " required>
+      <label>Full Name</label>
+    </div>
+    <div class="form-group">
+      <input type="tel" placeholder=" " required>
+      <label>Phone Number</label>
+    </div>
+    <div class="form-group">
+      <input type="text" placeholder=" " required>
+      <label>Address</label>
+    </div>
+    <div class="form-group">
+      <select id="serviceSelect" required>
+        <option value="">Select Service</option>
+        <option value="Trash Bin Cleaning 1">Trash Bin Cleaning - 1 bin ($30)</option>
+        <option value="Trash Bin Cleaning 2">Trash Bin Cleaning - 2 bins ($50)</option>
+        <option value="Grass Cutting">Grass Cutting - $25</option>
+      </select>
+      <label>Service</label>
+    </div>
     <p>If you need support, call <strong>832-370-6594</strong></p>
     <a class="cashapp-button" href="https://cash.app/$Taeski09" target="_blank">Pay with CashApp</a>
     <div id="apple-pay-button">Pay with Apple Pay</div>
@@ -169,90 +164,48 @@ iframe { width:90%; height:400px; border:0; border-radius:12px; }
 </div>
 
 <script>
-  // Falling flakes
-  for(let i=0;i<80;i++){
-    const f=document.createElement('div');
-    f.className='flake';
-    f.style.left=Math.random()*window.innerWidth+'px';
-    f.style.animationDuration=(3+Math.random()*5)+'s';
-    f.style.opacity=0.3+Math.random()*0.7;
-    f.style.width=f.style.height=(2+Math.random()*5)+'px';
-    document.body.appendChild(f);
-    f.addEventListener('animationend',()=>{ f.style.top='-10px'; f.style.left=Math.random()*window.innerWidth+'px'; });
-  }
+// Realistic falling snow
+for(let i=0;i<120;i++){
+  const s=document.createElement('div'); s.className='snowflake';
+  s.style.left=Math.random()*window.innerWidth+'px';
+  s.style.animationDuration=(5+Math.random()*7)+'s';
+  s.style.opacity=0.3+Math.random()*0.7;
+  s.style.width=s.style.height=(2+Math.random()*5)+'px';
+  s.style.animationDelay=(Math.random()*5)+'s';
+  document.body.appendChild(s);
+  s.addEventListener('animationend',()=>{ s.style.top='-10px'; s.style.left=Math.random()*window.innerWidth+'px'; });
+}
 
-  // Auto-scroll service cards
-  const slider=document.querySelector('.services-slider');
-  let dir=1;
-  function autoScroll(){
-    slider.scrollLeft+=dir;
-    if(slider.scrollLeft+slider.clientWidth>=slider.scrollWidth) dir=-1;
-    if(slider.scrollLeft<=0) dir=1;
-    requestAnimationFrame(autoScroll);
-  }
-  autoScroll();
+// Auto-scroll 3D service cards
+const slider=document.querySelector('.services-slider'); let dir=1;
+function autoScroll(){ slider.scrollLeft+=dir; if(slider.scrollLeft+slider.clientWidth>=slider.scrollWidth) dir=-1; if(slider.scrollLeft<=0) dir=1; requestAnimationFrame(autoScroll); }
+autoScroll();
 
-  // Scroll animations
-  const fadeElems=document.querySelectorAll('.fade-in');
-  window.addEventListener('scroll',()=>{fadeElems.forEach(el=>{if(el.getBoundingClientRect().top<window.innerHeight-50)el.classList.add('visible');});});
+// Scroll animations
+const fadeElems=document.querySelectorAll('.fade-in');
+window.addEventListener('scroll',()=>{fadeElems.forEach(el=>{if(el.getBoundingClientRect().top<window.innerHeight-50)el.classList.add('visible');});});
 
-  function selectService(service){
-    document.getElementById('serviceSelect').value=service;
-    document.getElementById('checkout').scrollIntoView({behavior:'smooth'});
-  }
+function selectService(service){document.getElementById('serviceSelect').value=service;document.getElementById('checkout').scrollIntoView({behavior:'smooth'});}
 
-  // EmailJS form
-  document.getElementById('orderForm').addEventListener('submit', function(e){
-    e.preventDefault();
-    const name=this.querySelector('input[placeholder="Full Name"]').value;
-    const phone=this.querySelector('input[placeholder="Phone Number"]').value;
-    const address=this.querySelector('input[placeholder="Address"]').value;
-    const service=this.querySelector('#serviceSelect').value;
+// EmailJS form submission
+document.getElementById('orderForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const name=this.querySelector('input[placeholder=" "]').value;
+  const phone=this.querySelectorAll('input[placeholder=" "]')[1].value;
+  const address=this.querySelectorAll('input[placeholder=" "]')[2].value;
+  const service=this.querySelector('#serviceSelect').value;
 
-    emailjs.send("YOUR_EMAILJS_SERVICE_ID","YOUR_EMAILJS_TEMPLATE_ID",{
-      to_email: "Boykintaeveon4@gmail.com",
-      customer_name: name,
-      customer_phone: phone,
-      customer_address: address,
-      customer_service: service
-    }).then(()=>{document.getElementById('confirmationPopup').style.display='flex'; this.reset();},
-            (err)=>{alert("Oops! Something went wrong."); console.log(err);});
-  });
+  emailjs.send("YOUR_EMAILJS_SERVICE_ID","YOUR_EMAILJS_TEMPLATE_ID",{
+    to_email: "Boykintaeveon4@gmail.com",
+    customer_name: name,
+    customer_phone: phone,
+    customer_address: address,
+    customer_service: service
+  }).then(()=>{document.getElementById('confirmationPopup').style.display='flex'; this.reset();},
+  (err)=>{alert("Oops! Something went wrong."); console.log(err);});
+});
 
-  function closePopup(){document.getElementById('confirmationPopup').style.display='none';}
-
-  // Apple Pay via Stripe
-  const stripe=Stripe("YOUR_STRIPE_PUBLISHABLE_KEY");
-  const applePayButton=document.getElementById('apple-pay-button');
-  applePayButton.addEventListener('click', async ()=>{
-    const service=document.getElementById('serviceSelect').value;
-    let amount=0;
-    if(service.includes("1")) amount=3000;
-    else if(service.includes("2")) amount=5000;
-    else if(service.includes("Grass")) amount=2500;
-    else { alert("Select a service first!"); return; }
-
-    const res=await fetch('/create-payment-intent',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({ amount, service })
-    });
-    const data=await res.json();
-    const paymentRequest=stripe.paymentRequest({
-      country:'US',
-      currency:'usd',
-      total:{label:service, amount:amount},
-      requestPayerName:true,
-      requestPayerEmail:true,
-    });
-
-    const result=await paymentRequest.show();
-    if(result){
-      const confirm=await stripe.confirmApplePayPayment(data.clientSecret,{payment_method:{apple_pay:result.paymentMethod}});
-      if(confirm.error) alert(confirm.error.message);
-      else alert("Payment Successful! We will contact you shortly.");
-    }
-  });
+function closePopup(){document.getElementById('confirmationPopup').style.display='none';}
 </script>
 </body>
 </html>
