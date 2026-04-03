@@ -9,18 +9,29 @@ html { scroll-behavior: smooth; }
 body { margin:0; font-family:'Segoe UI', Arial; background:#000; color:white; overflow-x:hidden; }
 
 /* NAVBAR */
-nav { position:sticky; top:0; background:rgba(0,0,0,0.8); padding:15px; text-align:center; z-index:1000; }
+nav { position:sticky; top:0; background:rgba(0,0,0,0.8); padding:15px; text-align:center; z-index:1000; border-bottom: 2px solid #00c6ff; animation: pulseBorder 2s infinite alternate; }
 nav a { color:white; margin:0 15px; text-decoration:none; font-weight:bold; }
 
 /* HEADER */
-header { text-align:center; padding:60px 20px; }
+header { text-align:center; padding:60px 20px; border: 2px solid #00c6ff; border-radius:20px; animation: pulseBorder 2s infinite alternate; }
 h1 { font-size:50px; text-shadow:0 0 10px #00c6ff,0 0 20px #3399ff; }
 .subtitle { color:#00c6ff; font-size:22px; text-shadow:0 0 5px #00c6ff; }
 
 /* CARDS */
 .container { display:flex; justify-content:center; gap:25px; flex-wrap:wrap; padding:20px; }
-.card { background:#111; padding:30px; border-radius:25px; width:280px; text-align:center; transition:0.4s; box-shadow:0 0 25px #00c6ff;}
+.card { background:#111; padding:30px; border-radius:25px; width:280px; text-align:center; transition:0.4s; box-shadow:0 0 25px #00c6ff; border: 2px solid #00c6ff; animation: pulseBorder 3s infinite alternate; position: relative; }
 .card:hover { transform:translateY(-12px) scale(1.08); box-shadow:0 0 35px #00c6ff,0 0 50px #66ccff; }
+
+/* SERVICE ICON */
+.card-icon {
+    font-size:40px;
+    margin-bottom:15px;
+    display:block;
+    animation: iconPulse 2s infinite alternate;
+    color:#00c6ff;
+}
+
+/* PRICE */
 .price { color:#00c6ff; font-size:30px; }
 
 /* BUTTONS */
@@ -28,24 +39,25 @@ button { padding:15px 25px; border:none; border-radius:15px; color:white; font-w
 .led-button { background:linear-gradient(45deg,#3399ff,#00c6ff); box-shadow:0 0 10px #00c6ff,0 0 15px #3399ff; }
 .led-button:hover { transform:scale(1.12); box-shadow:0 0 25px #00c6ff,0 0 35px #3399ff,0 0 50px #66ccff; animation: glow 1s infinite alternate; }
 @keyframes glow { 0% { box-shadow:0 0 25px #00c6ff,0 0 35px #3399ff; } 100% { box-shadow:0 0 35px #3399ff,0 0 50px #66ccff; } }
+@keyframes iconPulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
 
 /* GALLERY */
 .gallery { display:flex; gap:15px; overflow-x:auto; padding:20px; }
-.gallery img { width:240px; border-radius:15px; transition:0.4s; }
+.gallery img { width:240px; border-radius:15px; transition:0.4s; border:2px solid #00c6ff; animation: pulseBorder 4s infinite alternate; }
 .gallery img:hover { transform:scale(1.12); }
 
 /* SECTION TITLES */
 .section-title { text-align:center; margin-top:50px; font-size:28px; color:#00c6ff; }
 
 /* CHECKOUT FORM */
-#checkout { display:none; text-align:center; padding:50px; border-top:2px solid #00c6ff; }
+#checkout { display:none; text-align:center; padding:50px; border-top:2px solid #00c6ff; animation: pulseBorder 2s infinite alternate; }
 input, select { padding:14px; margin:10px; border-radius:12px; border:none; width:240px; }
 
 /* HIDE DATE/TIME VISUALLY */
 input[type=date], input[type=time] { display:none; }
 
 /* FOOTER */
-footer { text-align:center; padding:25px; opacity:0.7; }
+footer { text-align:center; padding:25px; opacity:0.8; border-top:2px solid #00c6ff; border-radius:12px; animation: pulseBorder 2s infinite alternate; }
 
 /* CONFIRMATION POPUP */
 #confirmation {
@@ -55,8 +67,12 @@ footer { text-align:center; padding:25px; opacity:0.7; }
 }
 #confirmation h2 { color:#00c6ff; margin-bottom:20px; }
 
-/* FLOATING ICONS/EMOJIS */
-.floating-icon { position:absolute; font-size:20px; opacity:0.2; pointer-events:none; color:#00c6ff; transition: transform 2s linear; }
+/* ANIMATED BORDER PULSE */
+@keyframes pulseBorder {
+    0% { box-shadow:0 0 5px #00c6ff; }
+    50% { box-shadow:0 0 20px #00c6ff,0 0 35px #3399ff; }
+    100% { box-shadow:0 0 5px #00c6ff; }
+}
 </style>
 </head>
 <body>
@@ -79,16 +95,19 @@ footer { text-align:center; padding:25px; opacity:0.7; }
 <h2 id="services" class="section-title">Our Services</h2>
 <div class="container">
     <div class="card">
+        <span class="card-icon">🗑️</span>
         <h2>1 Bin Cleaning</h2>
         <p class="price">$30</p>
         <button class="led-button" onclick="showForm('1 Bin - $30')">Book & Pay</button>
     </div>
     <div class="card">
-        <h2>🔥 2 Bin Deal</h2>
+        <span class="card-icon">🔥</span>
+        <h2>2 Bin Deal</h2>
         <p class="price">$50</p>
         <button class="led-button" onclick="showForm('2 Bins - $50')">Book & Pay</button>
     </div>
     <div class="card">
+        <span class="card-icon">🌿</span>
         <h2>Grass Cutting</h2>
         <p class="price">$25</p>
         <button class="led-button" onclick="showForm('Grass Cutting - $25')">Book & Pay</button>
@@ -133,39 +152,6 @@ src="https://maps.google.com/maps?q=Tulsa,Oklahoma&z=11&output=embed"></iframe>
     <p>Redirecting to Cash App...</p>
 </div>
 
-<footer>
-    © 2026 A.T.K FreshBin
-</footer>
-
-<!-- FLOATING ICONS/EMOJIS -->
-<script>
-const icons=["✨","🟦","🗑️","🌿","💵","📦","📞"];
-const floats=[];
-for(let i=0;i<20;i++){
-    const span=document.createElement('div');
-    span.className='floating-icon';
-    span.innerText=icons[Math.floor(Math.random()*icons.length)];
-    span.style.top=Math.random()*80+'%';
-    span.style.left=Math.random()*90+'%';
-    span.style.fontSize=(Math.random()*24+16)+'px';
-    document.body.appendChild(span);
-    floats.push({el:span, dx:(Math.random()-0.5)/3, dy:(Math.random()-0.5)/3});
-}
-function animateIcons(){
-    floats.forEach(f=>{
-        let rect=f.el.getBoundingClientRect();
-        let newX=rect.left+f.dx*10;
-        let newY=rect.top+f.dy*10;
-        if(newX<0||newX>window.innerWidth-20) f.dx*=-1;
-        if(newY<0||newY>window.innerHeight-20) f.dy*=-1;
-        f.el.style.transform=`translate(${newX}px,${newY}px) rotate(${newX/20}deg)`;
-    });
-    requestAnimationFrame(animateIcons);
-}
-animateIcons();
-</script>
-
-<!-- BOOKING + CASH APP -->
 <script>
 function showForm(service){
     document.getElementById("checkout").style.display="block";
@@ -183,6 +169,10 @@ document.getElementById('bookingForm').addEventListener('submit', function(e){
     .finally(()=>setTimeout(()=>{ window.location.href="https://cash.app/$Taeski09"; },1200));
 });
 </script>
+
+<footer>
+    © 2026 A.T.K FreshBin
+</footer>
 
 </body>
 </html>
