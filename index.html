@@ -7,74 +7,127 @@
 
 <style>
 html { scroll-behavior: smooth; }
-body { margin:0; font-family:'Segoe UI', Arial; background:#0b1f3a; color:white; overflow-x:hidden; cursor:default; }
+body { margin:0; font-family:'Segoe UI', Arial; background:#000; color:white; overflow-x:hidden; cursor:default; position:relative; }
+
+/* PARTICLE GLOW */
+.particle { position:absolute; border-radius:50%; background:rgba(255,255,255,0.15); pointer-events:none; }
 
 /* NAVBAR */
-nav { position:sticky; top:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(15px); padding:15px; text-align:center; z-index:1000; }
+nav { position:sticky; top:0; background:rgba(0,0,0,0.8); backdrop-filter:blur(10px); padding:15px; text-align:center; z-index:1000; }
 nav a { color:white; margin:0 15px; text-decoration:none; font-weight:bold; }
 
 /* HEADER */
-header { text-align:center; padding:60px 20px; }
-h1 { font-size:50px; text-shadow:0 0 10px #ff0055,0 0 20px #ff3366; }
-.subtitle { color:#ff3366; font-size:22px; text-shadow:0 0 5px #ff0055; }
+header { text-align:center; padding:60px 20px; position:relative; z-index:5; }
+h1 { font-size:50px; text-shadow:0 0 10px #fff,0 0 20px #aaa; }
+.subtitle { color:#ccc; font-size:22px; text-shadow:0 0 5px #fff; }
 
 /* CARDS */
-.container { display:flex; justify-content:center; gap:25px; flex-wrap:wrap; padding:20px; }
-.card { background:#221122; padding:30px; border-radius:25px; width:280px; text-align:center; transition:0.4s; box-shadow:0 0 25px rgba(255,0,85,0.6);}
-.card:hover { transform:translateY(-12px) scale(1.08); box-shadow:0 0 35px #ff0055,0 0 50px #ff3366; }
-.price { color:#ff0055; font-size:30px; }
+.container { display:flex; justify-content:center; gap:25px; flex-wrap:wrap; padding:20px; position:relative; z-index:5; }
+.card { background:#111; padding:30px; border-radius:25px; width:280px; text-align:center; transition:0.4s; 
+       box-shadow:0 0 25px #555; border: 2px solid #fff; animation: neonPulse 2s infinite alternate;}
+.card:hover { transform:translateY(-12px) scale(1.08); box-shadow:0 0 35px #fff,0 0 50px #aaa; }
+@keyframes neonPulse {
+    0% { border-color: #fff; box-shadow:0 0 25px #fff;}
+    50% { border-color: #aaa; box-shadow:0 0 35px #aaa;}
+    100% { border-color: #ccc; box-shadow:0 0 45px #ccc;}
+}
+.price { color:#fff; font-size:30px; }
 
 /* BUTTONS */
-button { padding:15px 25px; border:none; border-radius:15px; color:white; font-weight:bold; cursor:pointer; transition:0.4s; box-shadow:0 0 15px #ff3366; font-size:16px; }
-.led-button { background:linear-gradient(45deg,#ff3366,#ff6699); box-shadow:0 0 10px #ff3366,0 0 15px #ff6699; }
-.led-button:hover { transform:scale(1.12); box-shadow:0 0 25px #ff3366,0 0 35px #ff6699,0 0 50px #ffccff; animation: glow 1s infinite alternate; }
-@keyframes glow { 0% { box-shadow:0 0 25px #ff3366,0 0 35px #ff6699; } 100% { box-shadow:0 0 35px #ff6699,0 0 50px #ffccff; } }
+button { padding:15px 25px; border:none; border-radius:15px; color:white; font-weight:bold; cursor:pointer; transition:0.4s; box-shadow:0 0 15px #fff; font-size:16px; }
+.led-button { background:linear-gradient(45deg,#fff,#aaa); box-shadow:0 0 10px #fff,0 0 15px #aaa; }
+.led-button:hover { transform:scale(1.12); box-shadow:0 0 25px #fff,0 0 35px #aaa,0 0 50px #ccc; animation: glow 1s infinite alternate; }
+@keyframes glow { 0% { box-shadow:0 0 25px #fff,0 0 35px #aaa; } 100% { box-shadow:0 0 35px #aaa,0 0 50px #ccc; } }
 
 /* GALLERY */
-.gallery { display:flex; gap:15px; overflow-x:auto; padding:20px; }
-.gallery img { width:240px; border-radius:15px; transition:0.4s; }
-.gallery img:hover { transform:scale(1.12); }
+.gallery { display:flex; gap:15px; overflow-x:auto; padding:20px; position:relative; z-index:5; }
+.gallery img { width:240px; border-radius:15px; transition:0.4s; filter: grayscale(100%); border:2px solid #fff; animation: neonPulse 2s infinite alternate;}
+.gallery img:hover { transform:scale(1.12); filter: grayscale(0%); }
 
 /* SECTION TITLES */
-.section-title { text-align:center; margin-top:50px; font-size:28px; color:#ff3366; }
+.section-title { text-align:center; margin-top:50px; font-size:28px; color:#fff; }
 
 /* CHECKOUT FORM */
-#checkout { display:none; text-align:center; padding:50px; border-top:2px solid #ff3366; }
-input, select { padding:14px; margin:10px; border-radius:12px; border:none; width:240px; }
+#checkout { display:none; text-align:center; padding:50px; border-top:2px solid #fff; animation: neonPulse 2s infinite alternate;}
+input, select { padding:14px; margin:10px; border-radius:12px; border:none; width:240px; background:#222; color:white; }
+
+/* MAP */
+iframe { border: 2px solid #fff; border-radius:12px; animation: neonPulse 2s infinite alternate; }
 
 /* FOOTER */
-footer { text-align:center; padding:25px; opacity:0.7; }
+footer { text-align:center; padding:25px; opacity:0.7; position:relative; z-index:5; }
 
 /* CONFIRMATION POPUP */
 #confirmation {
     display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%);
-    background:#331133; border:2px solid #ff3366; padding:40px; border-radius:20px;
-    box-shadow:0 0 25px #ff3366,0 0 40px #ff6699; text-align:center; z-index:99999;
+    background:#111; border:2px solid #fff; padding:40px; border-radius:20px;
+    box-shadow:0 0 25px #fff,0 0 40px #aaa; text-align:center; z-index:99999;
 }
-#confirmation h2 { color:#ff3366; margin-bottom:20px; }
+#confirmation h2 { color:#fff; margin-bottom:20px; }
 
-/* SNOWFLAKES */
-.snowflake { position:fixed; top:0; color:#ff6699; font-size:1.5em; opacity:0.8; z-index:9999; pointer-events:none; transition: transform 0.1s linear; }
+/* SNOWFLAKES + LED SPARKS */
+.snowflake { position:fixed; top:0; color:white; font-size:1.5em; opacity:0.8; z-index:9999;
+    pointer-events:none; text-shadow:0 0 4px #fff,0 0 8px #aaa,0 0 12px #ccc; transition: transform 0.1s linear; }
+.spark { position:absolute; width:3px; height:3px; border-radius:50%; background:white; opacity:0.7; pointer-events:none; z-index:9999; }
 </style>
 </head>
-
 <body>
 
-<!-- SNOWFLAKES -->
+<!-- PARTICLE GLOW -->
 <script>
-const flakes=[];
+const particles=[];
 for(let i=0;i<60;i++){
-    const flake=document.createElement('div');
-    flake.className='snowflake';
-    flake.style.left=Math.random()*100+'vw';
-    flake.style.top=Math.random()*100+'vh';
-    flake.style.fontSize=(Math.random()*20+10)+'px';
-    flake.innerHTML='❄';
-    document.body.appendChild(flake);
-    flakes.push({el:flake,x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,dx:Math.random()*2-1,dy:Math.random()*2+0.5});
+    const p=document.createElement('div'); p.className='particle';
+    p.style.width=Math.random()*6+4+'px'; p.style.height=p.style.width;
+    p.style.left=Math.random()*window.innerWidth+'px';
+    p.style.top=Math.random()*window.innerHeight+'px';
+    document.body.appendChild(p); particles.push({el:p,x:parseFloat(p.style.left),y:parseFloat(p.style.top),dx:(Math.random()-0.5)*0.2,dy:(Math.random()-0.5)*0.2});
 }
-document.addEventListener('mousemove', e=>{ flakes.forEach(f=>f.dx+=(e.clientX/window.innerWidth-0.5)*0.05); });
-function animateFlakes(){ flakes.forEach(f=>{ f.x+=f.dx; f.y+=f.dy; if(f.y>window.innerHeight) f.y=-10; if(f.x>window.innerWidth) f.x=0; if(f.x<0) f.x=window.innerWidth; f.el.style.transform=`translate(${f.x}px,${f.y}px)`; }); requestAnimationFrame(animateFlakes); }
+function animateParticles(){
+    particles.forEach(p=>{
+        p.x+=p.dx; p.y+=p.dy;
+        if(p.x<0) p.x=window.innerWidth; if(p.x>window.innerWidth) p.x=0;
+        if(p.y<0) p.y=window.innerHeight; if(p.y>window.innerHeight) p.y=0;
+        p.el.style.transform=`translate(${p.x}px,${p.y}px)`;
+    });
+    requestAnimationFrame(animateParticles);
+}
+animateParticles();
+</script>
+
+<!-- SNOWFLAKES + SPARKS -->
+<script>
+const flakes=[]; const sparks=[];
+for(let i=0;i<60;i++){
+    const flake=document.createElement('div'); flake.className='snowflake';
+    flake.style.left=Math.random()*100+'vw'; flake.style.top=Math.random()*100+'vh';
+    flake.style.fontSize=(Math.random()*20+10)+'px'; flake.innerHTML='❄';
+    document.body.appendChild(flake);
+    flakes.push({el:flake,x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,dx:Math.random()*2-1,dy:Math.random()*1.5+0.5});
+}
+document.addEventListener('mousemove', e=>{
+    flakes.forEach(f=>{ f.dx+=(e.clientX/window.innerWidth-0.5)*0.05; 
+        const spark=document.createElement('div'); spark.className='spark';
+        spark.style.left=f.x+'px'; spark.style.top=f.y+'px';
+        spark.style.opacity=Math.random();
+        document.body.appendChild(spark);
+        sparks.push({el:spark,life:Math.random()*30}); });
+});
+function animateFlakes(){
+    flakes.forEach(f=>{
+        f.x+=f.dx; f.y+=f.dy;
+        if(f.y>window.innerHeight) f.y=-10;
+        if(f.x>window.innerWidth) f.x=0;
+        if(f.x<0) f.x=window.innerWidth;
+        f.el.style.transform=`translate(${f.x}px,${f.y}px)`;
+    });
+    sparks.forEach((s,i)=>{
+        s.life-=1; s.el.style.opacity=s.life/30;
+        s.el.style.top=parseFloat(s.el.style.top)+1+'px';
+        if(s.life<=0){ s.el.remove(); sparks.splice(i,1);}
+    });
+    requestAnimationFrame(animateFlakes);
+}
 animateFlakes();
 </script>
 
@@ -124,8 +177,7 @@ animateFlakes();
 <!-- MAP -->
 <h2 class="section-title">Service Area</h2>
 <div style="text-align:center;">
-<iframe width="90%" height="260" style="border:0;border-radius:12px;" 
-src="https://maps.google.com/maps?q=Tulsa,Oklahoma&z=11&output=embed"></iframe>
+<iframe width="90%" height="260" src="https://maps.google.com/maps?q=Tulsa,Oklahoma&z=11&output=embed"></iframe>
 </div>
 
 <!-- CHECKOUT -->
