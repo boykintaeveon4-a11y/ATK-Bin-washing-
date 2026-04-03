@@ -3,144 +3,196 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FreshBin Pros</title>
+<title>FreshBin & Lawn Pros</title>
 
 <style>
-  body {
+body {
+    margin: 0;
     font-family: Arial, sans-serif;
-    margin:0;
-    background:#0b1f3a; /* dark blue */
-    color:white;
-  }
+    background: #0b1f3a;
+    color: white;
+}
 
-  header {
-    text-align:center;
-    padding:50px 20px;
-    background:#102a4d;
-  }
+/* Header */
+header {
+    text-align: center;
+    padding: 50px 20px;
+    animation: fadeIn 1s ease-in;
+}
 
-  h1 { margin:0; font-size:2.5em; }
+h1 { font-size: 42px; }
 
-  section {
-    padding:40px 20px;
-    max-width:1000px;
-    margin:auto;
-  }
+/* Cards */
+.container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
 
-  .services {
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:20px;
-  }
+.card {
+    background: #122b52;
+    padding: 20px;
+    border-radius: 15px;
+    width: 260px;
+    text-align: center;
+    transition: transform 0.3s;
+}
 
-  .card {
-    background:#163a66;
-    padding:20px;
-    border-radius:12px;
-  }
+.card:hover {
+    transform: scale(1.05);
+}
 
-  .price {
-    font-size:1.4em;
-    font-weight:bold;
-    margin:10px 0;
-  }
+.price {
+    color: #4da6ff;
+    font-size: 26px;
+}
 
-  button {
-    background:#00c2ff;
-    border:none;
-    padding:10px 20px;
-    border-radius:8px;
-    cursor:pointer;
-    font-weight:bold;
-  }
+/* Gallery */
+.gallery {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 20px;
+}
 
-  #checkout {
-    display:none;
-    background:#102a4d;
-    padding:30px;
-    border-radius:12px;
-    margin-top:30px;
-  }
+.gallery img {
+    width: 200px;
+    border-radius: 10px;
+}
 
-  input {
-    width:100%;
-    padding:10px;
-    margin:10px 0;
-    border-radius:6px;
-    border:none;
-  }
+/* Checkout */
+#checkout {
+    display: none;
+    text-align: center;
+    padding: 30px;
+}
 
-  .pay-btn {
-    background:#00ff9d;
-    color:black;
-    width:100%;
-    padding:15px;
-    font-size:1.1em;
-  }
+input, select {
+    padding: 10px;
+    margin: 8px;
+    border-radius: 8px;
+    border: none;
+}
 
+/* Button */
+button {
+    padding: 10px 20px;
+    background: #1e90ff;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {opacity:0; transform: translateY(20px);}
+    to {opacity:1; transform: translateY(0);}
+}
 </style>
 </head>
 
 <body>
 
 <header>
-  <h1>FreshBin Pros</h1>
-  <p>Premium Trash Can Cleaning</p>
+    <h1>FreshBin & Lawn Pros</h1>
+    <p>Professional Bin Cleaning & Lawn Care</p>
 </header>
 
-<section>
-  <h2>Choose Your Service</h2>
+<!-- SERVICES -->
+<div class="container">
 
-  <div class="services">
+<div class="card">
+    <h2>1 Bin Cleaning</h2>
+    <p class="price">$30</p>
+    <button onclick="selectService('1 Bin - $30',30)">Select</button>
+</div>
 
-    <div class="card">
-      <h3>Standard Bin Cleaning</h3>
-      <p>$30 per bin</p>
-      <button onclick="selectService('Standard Bin Cleaning', 30)">Select</button>
-    </div>
+<div class="card">
+    <h2>2 Bin Deal 🔥</h2>
+    <p class="price">$50</p>
+    <button onclick="selectService('2 Bins - $50',50)">Select</button>
+</div>
 
-    <div class="card">
-      <h3>Deep Clean</h3>
-      <p>$40 per bin</p>
-      <button onclick="selectService('Deep Clean', 40)">Select</button>
-    </div>
+<div class="card">
+    <h2>Grass Cutting</h2>
+    <p class="price">$25</p>
+    <button onclick="selectService('Grass Cutting - $25',25)">Select</button>
+</div>
 
-    <div class="card">
-      <h3>Monthly Plan</h3>
-      <p>$25 per bin</p>
-      <button onclick="selectService('Monthly Plan', 25)">Select</button>
-    </div>
+</div>
 
-    <div class="card">
-      <h3>Commercial Cleaning</h3>
-      <p>$60+</p>
-      <button onclick="selectService('Commercial Cleaning', 60)">Select</button>
-    </div>
+<!-- GALLERY -->
+<h2 style="text-align:center;">Before / After</h2>
+<div class="gallery">
+    <img src="https://via.placeholder.com/200?text=Dirty+Bin">
+    <img src="https://via.placeholder.com/200?text=Clean+Bin">
+    <img src="https://via.placeholder.com/200?text=Lawn+Before">
+    <img src="https://via.placeholder.com/200?text=Lawn+After">
+</div>
 
-  </div>
+<!-- MAP -->
+<h2 style="text-align:center;">Service Area</h2>
+<div style="text-align:center;">
+<iframe 
+width="90%" 
+height="250" 
+style="border:0;border-radius:10px;" 
+loading="lazy"
+src="https://maps.google.com/maps?q=Tulsa,Oklahoma&t=&z=11&ie=UTF8&iwloc=&output=embed">
+</iframe>
+</div>
 
-  <!-- CHECKOUT -->
-  <div id="checkout">
-    <h2>Checkout</h2>
+<!-- CHECKOUT -->
+<div id="checkout">
+    <h2>Book Service</h2>
+    <p id="serviceChosen"></p>
 
-    <p id="service-name"></p>
-    <p id="service-price"></p>
+    <input type="text" placeholder="Name"><br>
+    <input type="text" placeholder="Address"><br>
+    <input type="text" placeholder="Phone"><br>
 
-    <input type="text" placeholder="Your Name">
-    <input type="text" placeholder="Address">
-    <input type="text" placeholder="Phone Number">
+    <!-- Calendar -->
+    <input type="date"><br>
+    <input type="time"><br>
 
-    <button class="pay-btn">Confirm Booking</button>
-  </div>
+    <!-- Payment -->
+    <select id="payment">
+        <option>Cash App</option>
+        <option>PayPal</option>
+        <option>Venmo</option>
+        <option>Apple Pay</option>
+    </select><br>
 
-</section>
+    <button onclick="payNow()">Continue to Payment</button>
+</div>
 
 <script>
-function selectService(name, price) {
-  document.getElementById("checkout").style.display = "block";
-  document.getElementById("service-name").innerText = "Service: " + name;
-  document.getElementById("service-price").innerText = "Price: $" + price;
-  window.scrollTo(0, document.body.scrollHeight);
+let total = 0;
+
+function selectService(service, price) {
+    document.getElementById("checkout").style.display = "block";
+    document.getElementById("serviceChosen").innerText = "Selected: " + service;
+    total = price;
+    window.scrollTo(0, document.body.scrollHeight);
+}
+
+function payNow() {
+    let method = document.getElementById("payment").value;
+
+    if(method === "Cash App") {
+        window.location.href = "https://cash.app/$Taeski09"; 
+    }
+    else if(method === "PayPal") {
+        window.location.href = "https://paypal.me/YourLink";
+    }
+    else if(method === "Venmo") {
+        window.location.href = "https://venmo.com/YourLink";
+    }
+    else {
+        alert("Apple Pay: Collect in person or upgrade to Stripe later");
+    }
 }
 </script>
 
