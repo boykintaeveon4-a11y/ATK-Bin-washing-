@@ -3,132 +3,128 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ATKFreshBin</title>
+<title>A.T.K FreshBin</title>
+
 <style>
 html { scroll-behavior: smooth; }
-body { margin:0; font-family:'Segoe UI', Arial; background:#000; color:white; overflow-x:hidden; cursor:default; perspective:1000px; }
-
-/* PARALLAX BACKGROUND */
-#parallax-bg {
-    position:fixed; top:0; left:0; width:100%; height:100%; overflow:hidden; z-index:-1;
-}
-.layer { position:absolute; width:200%; height:200%; background-repeat:repeat; opacity:0.1; mix-blend-mode:screen; }
-.layer1 { background: radial-gradient(circle, #00f 5%, transparent 20%); }
-.layer2 { background: radial-gradient(circle, #0ff 3%, transparent 20%); }
-.layer3 { background: radial-gradient(circle, #00aaff 2%, transparent 20%); }
+body { margin:0; font-family:'Segoe UI', Arial; background:linear-gradient(to bottom,#111,#333); color:white; overflow-x:hidden; cursor:default; }
 
 /* NAVBAR */
 nav { position:sticky; top:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(12px); padding:15px; text-align:center; z-index:1000; }
-nav a { color:white; margin:0 20px; text-decoration:none; font-weight:bold; font-size:16px; transition:0.3s; }
-nav a:hover { color:#0ff; }
+nav a { color:white; margin:0 15px; text-decoration:none; font-weight:bold; transition:0.3s; }
+nav a:hover { color:#00bfff; text-shadow:0 0 10px #00bfff; }
 
 /* HEADER */
-header { text-align:center; padding:100px 20px; animation: shimmer 4s infinite linear; }
-h1 { font-size:64px; color:#0ff; text-shadow:0 0 15px #0ff, 0 0 30px #00f, 0 0 50px #0ff; animation: shimmer 3s infinite linear; }
-.subtitle { color:#ccc; font-size:26px; text-shadow:0 0 6px #0ff; }
+header { text-align:center; padding:60px 20px; position:relative; }
+h1 { font-size:60px; }
+h1 span { font-weight:bold; display:inline-block; margin:0 3px; text-shadow:0 0 15px #00bfff,0 0 25px #fff; animation:neonGlow 1.5s infinite alternate; }
+@keyframes neonGlow { 0%{ text-shadow:0 0 10px #00bfff,0 0 20px #fff; } 100%{ text-shadow:0 0 25px #00bfff,0 0 50px #fff; } }
+.subtitle { color:#ccc; font-size:24px; text-shadow:0 0 8px #999; }
+header p.support { font-size:18px; color:#aaa; margin-top:10px; }
 
-/* SHIMMER EFFECT */
-@keyframes shimmer {
-  0% { text-shadow: 0 0 10px #0ff, 0 0 20px #00f, 0 0 30px #0ff; }
-  50% { text-shadow: 0 0 20px #0ff, 0 0 40px #0ff, 0 0 60px #0ff; }
-  100% { text-shadow: 0 0 10px #0ff, 0 0 20px #00f, 0 0 30px #0ff; }
-}
+/* CARDS */
+.container { display:flex; justify-content:center; gap:25px; flex-wrap:wrap; padding:20px; }
+.card { background:#222; padding:30px; border-radius:25px; width:280px; text-align:center; transition:0.5s; box-shadow:0 0 30px rgba(255,255,255,0.2); position:relative; overflow:hidden;}
+.card:hover { transform:translateY(-12px) scale(1.08); box-shadow:0 0 50px #00bfff,0 0 70px #ccc; border:2px solid #00bfff; }
+.card h2 { margin-bottom:10px; }
+.card .emoji { position:absolute; top:10px; right:10px; font-size:2em; animation:bounce 2s infinite alternate; }
+@keyframes bounce { 0%{transform:translateY(0);} 100%{transform:translateY(-15px);} }
 
-/* SERVICES */
-.container { display:flex; justify-content:center; gap:30px; flex-wrap:wrap; padding:30px; }
-.card { background:#111; padding:30px; border-radius:25px; width:300px; text-align:center; transition:0.4s; box-shadow:0 0 20px #00f; position:relative; overflow:hidden; }
-.card::after { content:""; position:absolute; top:0; left:0; width:100%; height:100%; border-radius:25px; background: linear-gradient(120deg, rgba(0,255,255,0.1), rgba(0,255,255,0)); pointer-events:none; animation:shine 3s infinite linear; }
-@keyframes shine { 0% {transform:translateX(-100%);} 100% {transform:translateX(100%);} }
-.card:hover { transform:translateY(-12px) scale(1.05); box-shadow:0 0 40px #0ff, 0 0 60px #00f; }
-.price { color:#0ff; font-size:28px; margin:10px 0; }
-.card h2 { font-size:24px; margin-bottom:10px; }
-.card p { font-size:18px; margin-bottom:20px; }
+.price { color:#fff; font-size:30px; text-shadow:0 0 5px #00bfff; }
 
-/* BUTTONS WITH LIGHT TRAILS */
-button { padding:15px 30px; border:none; border-radius:15px; color:white; font-weight:bold; cursor:pointer; transition:0.4s; font-size:16px; box-shadow:0 0 15px #0ff, 0 0 25px #00f; background:#000; position:relative; overflow:hidden; }
-button:hover { transform:scale(1.1); box-shadow:0 0 50px #0ff, 0 0 70px #0ff, 0 0 90px #00f; }
-button::after { content:"💧"; position:absolute; top:-10px; left:50%; transform:translateX(-50%); opacity:0; transition:0.3s; }
-button:hover::after { opacity:1; top:10px; animation:drip 0.7s ease forwards; }
-@keyframes drip { 0% { transform:translateX(-50%) translateY(0); opacity:1; } 100% { transform:translateX(-50%) translateY(20px); opacity:0; } }
+/* BUTTONS */
+button { padding:15px 25px; border:none; border-radius:15px; color:white; font-weight:bold; cursor:pointer; transition:0.5s; font-size:16px; background:#333; box-shadow:0 0 15px #00bfff; }
+button:hover { transform:scale(1.12); box-shadow:0 0 25px #00bfff,0 0 35px #ccc; animation:glow 1s infinite alternate; }
+@keyframes glow { 0%{box-shadow:0 0 25px #00bfff,0 0 35px #ccc;} 100%{box-shadow:0 0 45px #00bfff,0 0 60px #ccc;} }
+
+/* GALLERY */
+.gallery { display:flex; gap:15px; overflow-x:auto; padding:20px; }
+.gallery img { width:240px; border-radius:15px; transition:0.5s; border:2px solid #444; box-shadow:0 0 20px rgba(0,191,255,0.4); }
+.gallery img:hover { transform:scale(1.12); box-shadow:0 0 50px #00bfff,0 0 70px #ccc; }
 
 /* SECTION TITLES */
-.section-title { text-align:center; margin-top:50px; font-size:32px; color:#0ff; }
+.section-title { text-align:center; margin-top:50px; font-size:32px; color:#00bfff; text-shadow:0 0 15px #00bfff,0 0 25px #ccc; }
 
 /* CHECKOUT FORM */
-#checkout { display:none; text-align:center; padding:50px; border-top:2px solid #0ff; }
-input, select { padding:14px; margin:10px; border-radius:12px; border:none; width:260px; background:#111; color:white; }
-input::placeholder { color:#aaa; }
+#checkout { display:none; text-align:center; padding:50px; border-top:2px solid #00bfff; background:rgba(0,0,0,0.7); border-radius:20px; margin:20px; }
+input, select { padding:14px; margin:10px; border-radius:12px; border:none; width:240px; background:#333; color:#fff; transition:0.3s; }
+input:focus, select:focus { outline:none; box-shadow:0 0 15px #00bfff; }
 
 /* FOOTER */
-footer { text-align:center; padding:25px; opacity:0.7; font-size:14px; }
+footer { text-align:center; padding:25px; opacity:0.9; color:#ccc; }
 
 /* CONFIRMATION POPUP */
 #confirmation {
     display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%);
-    background:#111; border:2px solid #0ff; padding:40px; border-radius:20px;
-    box-shadow:0 0 25px #0ff,0 0 40px #00f; text-align:center; z-index:99999;
+    background:#222; border:2px solid #00bfff; padding:50px; border-radius:20px;
+    box-shadow:0 0 40px #00bfff,0 0 60px #ccc; text-align:center; z-index:99999;
 }
-#confirmation h2 { color:#0ff; margin-bottom:20px; }
+#confirmation h2 { color:#00bfff; margin-bottom:20px; }
 
 /* RAINDROPS */
-.raindrop { position:fixed; top:-50px; width:8px; height:25px; background:rgba(0,200,255,0.6); border-radius:50%; z-index:9999; pointer-events:none; animation:fall linear infinite; opacity:0.6; }
-@keyframes fall { 0% { transform:translateY(-50px); } 100% { transform:translateY(110vh); opacity:0; } }
+.raindrop { position:fixed; top:-50px; color:#00bfff; font-size:1.5em; opacity:0.7; z-index:9999; pointer-events:none; user-select:none; transition: transform 0.1s linear; }
 
-/* FLOATING ICONS */
-.ficon { position:fixed; font-size:24px; color:#0ff; opacity:0.2; animation:floaty 8s infinite alternate; pointer-events:none; }
-@keyframes floaty { 0% { transform:translateY(0);} 100% { transform:translateY(-30px);} }
-
+/* CURSOR TRAIL */
+.trail { position:fixed; width:14px; height:14px; border-radius:50%; background:#00bfff; pointer-events:none; opacity:0.7; z-index:99999; transform:translate(-50%,-50%); transition:0.05s; }
 </style>
 </head>
+
 <body>
-
-<!-- PARALLAX BACKGROUND -->
-<div id="parallax-bg">
-    <div class="layer layer1"></div>
-    <div class="layer layer2"></div>
-    <div class="layer layer3"></div>
-</div>
-
-<!-- FLOATING ICONS -->
-<div class="ficon" style="top:10%; left:15%;">💧</div>
-<div class="ficon" style="top:30%; left:70%;">🛠</div>
-<div class="ficon" style="top:60%; left:40%;">🌿</div>
-<div class="ficon" style="top:80%; left:20%;">🗑</div>
 
 <!-- NAV -->
 <nav>
-    <a href="#">🏠 Home</a>
-    <a href="#services">🛠 Services</a>
-    <a href="#checkout">💳 Book</a>
+    <a href="#">Home</a>
+    <a href="#services">Services</a>
+    <a href="#gallery">Photos</a>
+    <a href="#checkout">Book</a>
 </nav>
 
 <!-- HEADER -->
 <header>
-    <h1>ATKFreshBin</h1>
-    <p class="subtitle">🗑 Trash Bin Cleaning & Lawn Care 🌿</p>
+    <h1>
+        <span>A</span>.<span>T</span>.<span>K</span> FreshBin
+    </h1>
+    <p class="subtitle">🗑 Trash Bin Cleaning & 🌿 Lawn Care</p>
+    <p class="support">Support: <a href="tel:8323706594" style="color:#fff; text-decoration:underline;">832-370-6594</a></p>
 </header>
 
 <!-- SERVICES -->
 <h2 id="services" class="section-title">Our Services</h2>
 <div class="container">
-    <div class="card">
-        <h2>1 Bin Cleaning 🗑</h2>
-        <p class="price">$30</p>
-        <p>✨ Sparkling clean every time</p>
-        <button onclick="showForm('1 Bin - $30')">Book & Pay 💸</button>
-    </div>
-    <div class="card">
-        <h2>2 Bin Deal 🔥</h2>
-        <p class="price">$50</p>
-        <p>💎 Save & clean two bins</p>
-        <button onclick="showForm('2 Bins - $50')">Book & Pay 💸</button>
-    </div>
-    <div class="card">
-        <h2>Grass Cutting 🌱</h2>
-        <p class="price">$25</p>
-        <p>💨 Quick & neat</p>
-        <button onclick="showForm('Grass Cutting - $25')">Book & Pay 💸</button>
-    </div>
+<div class="card">
+    <h2>🗑 1 Bin Cleaning</h2>
+    <p class="price">$30</p>
+    <div class="emoji">✨</div>
+    <button onclick="showForm('1 Bin - $30')">Book & Pay</button>
+</div>
+<div class="card">
+    <h2>🔥 2 Bin Deal</h2>
+    <p class="price">$50</p>
+    <div class="emoji">💎</div>
+    <button onclick="showForm('2 Bins - $50')">Book & Pay</button>
+</div>
+<div class="card">
+    <h2>🌿 Grass Cutting</h2>
+    <p class="price">$25</p>
+    <div class="emoji">💧</div>
+    <button onclick="showForm('Grass Cutting - $25')">Book & Pay</button>
+</div>
+</div>
+
+<!-- GALLERY -->
+<h2 id="gallery" class="section-title">Before / After</h2>
+<div class="gallery">
+    <img src="https://via.placeholder.com/240x160?text=Before">
+    <img src="https://via.placeholder.com/240x160?text=After">
+    <img src="https://via.placeholder.com/240x160?text=Lawn+Before">
+    <img src="https://via.placeholder.com/240x160?text=Lawn+After">
+</div>
+
+<!-- MAP -->
+<h2 class="section-title">Service Area</h2>
+<div style="text-align:center;">
+<iframe width="90%" height="260" style="border:0;border-radius:12px;" 
+src="https://maps.google.com/maps?q=Tulsa,Oklahoma&z=11&output=embed"></iframe>
 </div>
 
 <!-- CHECKOUT -->
@@ -142,55 +138,74 @@ footer { text-align:center; padding:25px; opacity:0.7; font-size:14px; }
         <input type="date" name="date" required><br>
         <input type="time" name="time" required><br>
         <input type="hidden" name="service" id="serviceInput">
-        <button type="submit">Submit & Pay Cash App 💸</button>
+        <button type="submit">Submit & Pay Cash App</button>
     </form>
 </div>
 
-<!-- CONFIRMATION POPUP -->
+<!-- CONFIRMATION -->
 <div id="confirmation">
     <h2 id="confirmMessage"></h2>
     <p>Redirecting to Cash App...</p>
 </div>
 
-<footer>
-    © 2026 ATKFreshBin
-</footer>
-
+<!-- RAINDROPS SCRIPT -->
 <script>
-// PARALLAX MOVEMENT
-const layers=document.querySelectorAll('.layer');
-window.addEventListener('scroll',()=>{ const top=window.scrollY; layers.forEach((l,i)=>{ l.style.transform=`translateY(${top*(0.1*i)}px)`; }); });
-
-// RAINDROPS
 const drops=[];
-for(let i=0;i<60;i++){
-    const drop=document.createElement('div');
-    drop.className='raindrop';
-    drop.style.left=Math.random()*100+'vw';
-    drop.style.animationDuration=(Math.random()*4+3)+'s';
-    drop.style.height=(Math.random()*30+20)+'px';
-    drop.style.width=(Math.random()*6+4)+'px';
-    document.body.appendChild(drop);
-    drops.push(drop);
+for(let i=0;i<100;i++){
+    const d=document.createElement('div');
+    d.className='raindrop';
+    d.innerText='💧';
+    d.style.left=Math.random()*window.innerWidth+'px';
+    d.style.top=Math.random()*-500+'px';
+    d.style.fontSize=(Math.random()*25+15)+'px';
+    document.body.appendChild(d);
+    drops.push({el:d,x:parseFloat(d.style.left),y:parseFloat(d.style.top),dy:Math.random()*2+1});
 }
+function animateDrops(){
+    drops.forEach(d=>{
+        d.y+=d.dy;
+        if(d.y>window.innerHeight) d.y=-50;
+        d.el.style.transform=`translate(${d.x}px,${d.y}px)`;
+    });
+    requestAnimationFrame(animateDrops);
+}
+animateDrops();
+</script>
 
-// SERVICE FORM
+<!-- CURSOR TRAIL -->
+<script>
+const trailElements=[];
+for(let i=0;i<10;i++){
+    const t=document.createElement('div');
+    t.className='trail';
+    document.body.appendChild(t);
+    trailElements.push(t);
+}
+document.addEventListener('mousemove', e=>{
+    trailElements.forEach((t,i)=>{
+        setTimeout(()=>{ t.style.left=e.clientX+'px'; t.style.top=e.clientY+'px'; }, i*15);
+    });
+});
+</script>
+
+<!-- FORM & CASH APP -->
+<script>
 function showForm(service){
     document.getElementById("checkout").style.display="block";
-    document.getElementById("serviceChosen").innerText="Selected Service: " + service;
-    document.getElementById("serviceInput").value = service;
+    document.getElementById("serviceChosen").innerText="Selected Service: "+service;
+    document.getElementById("serviceInput").value=service;
     window.scrollTo({top: document.body.scrollHeight, behavior:'smooth'});
 }
 
-// FORM SUBMIT + CASH APP
 document.getElementById('bookingForm').addEventListener('submit', function(e){
     e.preventDefault();
-    const service = document.getElementById('serviceInput').value;
-    document.getElementById('confirmMessage').innerText = `Thanks! Your booking for ${service} is confirmed.`;
+    const service=document.getElementById('serviceInput').value;
+    document.getElementById('confirmMessage').innerText=`Thanks! Your booking for ${service} is confirmed.`;
     document.getElementById('confirmation').style.display='block';
     fetch(this.action,{method:"POST", body:new FormData(this), headers:{'Accept':'application/json'}})
-    .finally(()=>setTimeout(()=>{ window.location.href = "https://cash.app/$Taeski09"; },1500));
+    .finally(()=>setTimeout(()=>{ window.location.href="https://cash.app/$Taeski09"; },1200));
 });
 </script>
+
 </body>
 </html>
