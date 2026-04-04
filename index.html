@@ -3,177 +3,231 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A.T.K FreshBin - $2M Style</title>
+<title>A.T.K FreshBin</title>
+
 <style>
-html { scroll-behavior: smooth; }
-body { margin:0; font-family:'Segoe UI', Arial; background:#111; color:#eee; overflow-x:hidden; }
-
-/* NAVBAR */
-nav { position:sticky; top:0; background:rgba(0,0,0,0.85); padding:15px; text-align:center; z-index:1000; border-bottom:2px solid #00c6ff; animation:pulseBorder 2s infinite alternate; }
-nav a { color:#eee; margin:0 15px; text-decoration:none; font-weight:bold; }
-
-/* NEON FLICKER ANIMATION */
-@keyframes flicker {
-  0%,19%,21%,23%,25%,54%,56%,100% { text-shadow:0 0 5px #00c6ff,0 0 10px #00c6ff,0 0 20px #00c6ff; }
-  20%,24%,55% { text-shadow:none; }
+body {
+    margin:0;
+    font-family:'Segoe UI';
+    background:#111;
+    color:white;
+    overflow:hidden;
 }
-.flicker { animation: flicker 2s infinite; }
+
+/* LOADING SCREEN */
+#loader {
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:#000;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:99999;
+    flex-direction:column;
+}
+.loader-circle {
+    width:60px;
+    height:60px;
+    border:4px solid #00c6ff;
+    border-top:4px solid transparent;
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+}
+@keyframes spin { to { transform:rotate(360deg); } }
+
+/* NAV */
+nav {
+    position:fixed;
+    bottom:0;
+    width:100%;
+    background:#000;
+    display:flex;
+    justify-content:space-around;
+    padding:10px 0;
+    border-top:2px solid #00c6ff;
+}
+nav button {
+    background:none;
+    border:none;
+    color:#00c6ff;
+    font-size:16px;
+}
+
+/* PAGES */
+#app {
+    display:flex;
+    width:400%;
+    height:100vh;
+    transition:transform 0.5s ease;
+}
+
+.page {
+    width:100%;
+    flex-shrink:0;
+    padding:20px;
+    overflow-y:auto;
+}
 
 /* HEADER */
-header { text-align:center; padding:60px 20px; border:2px solid #00c6ff; border-radius:20px; animation:pulseBorder 2s infinite alternate; background:#222; }
-h1 { font-size:50px; color:#eee; text-shadow:0 0 20px #00c6ff,0 0 30px #00c6ff; }
-.subtitle { color:#ccc; font-size:22px; text-shadow:0 0 10px #00c6ff; }
+h1 {
+    text-align:center;
+    text-shadow:0 0 20px #00c6ff;
+}
 
 /* CARDS */
-.container { display:flex; justify-content:center; gap:25px; flex-wrap:wrap; padding:20px; }
-.card { background:#222; padding:30px; border-radius:25px; width:280px; text-align:center; transition:0.4s; box-shadow:0 0 25px #00c6ff; border:2px solid #00c6ff; position:relative; overflow:hidden; }
-.card:hover { transform:translateY(-12px) scale(1.08); box-shadow:0 0 35px #00c6ff,0 0 50px #3399ff; }
+.card {
+    background:#222;
+    padding:20px;
+    border-radius:20px;
+    margin:20px;
+    text-align:center;
+    box-shadow:0 0 20px #00c6ff;
+}
+.card button {
+    background:#00c6ff;
+    border:none;
+    padding:10px;
+    border-radius:10px;
+    margin-top:10px;
+}
 
-/* CARD ICONS */
-.card-icon { font-size:50px; display:block; margin-bottom:15px; color:#00c6ff; animation: iconPulse 2s infinite alternate; }
-@keyframes iconPulse { 0% { transform:scale(1); } 50% { transform:scale(1.2); } 100% { transform:scale(1); } }
-
-/* PRICE */
-.price { color:#00c6ff; font-size:30px; }
-
-/* BUTTONS */
-button { padding:15px 25px; border:none; border-radius:15px; color:white; font-weight:bold; cursor:pointer; transition:0.4s; box-shadow:0 0 15px #00c6ff; font-size:16px; position:relative; overflow:hidden; }
-.led-button { background:linear-gradient(45deg,#3399ff,#00c6ff); box-shadow:0 0 10px #00c6ff,0 0 15px #3399ff; }
-.led-button:hover { transform:scale(1.12); box-shadow:0 0 25px #00c6ff,0 0 35px #3399ff,0 0 50px #66ccff; animation: glow 1s infinite alternate; }
-@keyframes glow { 0% { box-shadow:0 0 25px #00c6ff,0 0 35px #3399ff; } 100% { box-shadow:0 0 35px #00c6ff,0 0 50px #3399ff; } }
-
-/* ANIMATED EMOJIS */
-.emoji { position:absolute; font-size:24px; animation: floatEmoji 4s infinite alternate; }
-@keyframes floatEmoji { 0% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-15px) rotate(15deg); } 100% { transform: translateY(0) rotate(-15deg); } }
-
-/* GALLERY */
-.gallery { display:flex; gap:15px; overflow-x:auto; padding:20px; }
-.gallery img { width:240px; border-radius:15px; transition:0.4s; border:2px solid #00c6ff; }
-.gallery img:hover { transform:scale(1.12); }
-
-/* MAP */
-.map-container { position:relative; display:inline-block; border:2px solid #00c6ff; border-radius:15px; overflow:hidden; }
-
-/* SECTION TITLES */
-.section-title { text-align:center; margin-top:50px; font-size:28px; color:#00c6ff; }
-.section-title.flicker { animation:flicker 2s infinite; }
-
-/* CHECKOUT FORM */
-#checkout { display:none; text-align:center; padding:50px; border-top:2px solid #00c6ff; background:#222; border-radius:20px; box-shadow:0 0 50px #00c6ff; }
-input, select { padding:14px; margin:10px; border-radius:12px; border:none; width:240px; background:#111; color:#eee; }
-
-/* CONFIRMATION POPUP */
-#confirmation { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
- background:#222; border:2px solid #00c6ff; padding:40px; border-radius:20px;
- box-shadow:0 0 25px #00c6ff,0 0 40px #3399ff; text-align:center; z-index:99999; }
-#confirmation h2 { color:#00c6ff; margin-bottom:20px; }
-
-/* ANIMATED BORDER PULSE */
-@keyframes pulseBorder { 0% { box-shadow:0 0 5px #00c6ff; } 50% { box-shadow:0 0 20px #00c6ff,0 0 35px #3399ff; } 100% { box-shadow:0 0 5px #00c6ff; } }
+/* INPUT */
+input {
+    display:block;
+    margin:10px auto;
+    padding:10px;
+    border-radius:10px;
+    border:none;
+    width:80%;
+}
 </style>
 </head>
+
 <body>
 
-<!-- NAV -->
-<nav>
-    <a href="#">Home</a>
-    <a href="#services">Services</a>
-    <a href="#gallery">Photos</a>
-    <a href="#checkout">Book</a>
-</nav>
+<!-- LOADER -->
+<div id="loader">
+    <div class="loader-circle"></div>
+    <p>Loading A.T.K...</p>
+</div>
 
-<!-- HEADER -->
-<header>
-    <h1 class="flicker">A.T.K FreshBin</h1>
-    <p class="subtitle flicker">Trash Bin Cleaning & Lawn Care</p>
-</header>
+<!-- APP -->
+<div id="app">
+
+<!-- HOME -->
+<div class="page">
+    <h1>A.T.K FreshBin</h1>
+    <p style="text-align:center;">Premium Bin Cleaning</p>
+</div>
 
 <!-- SERVICES -->
-<h2 id="services" class="section-title flicker">Our Services</h2>
-<div class="container">
+<div class="page">
+    <h1>Services</h1>
+
     <div class="card">
-        <span class="card-icon">🗑️</span>
-        <span class="emoji" style="top:10px; left:10px;">✨</span>
-        <h2>1 Bin Cleaning</h2>
-        <p class="price">$30</p>
-        <button class="led-button" onclick="showForm('1 Bin - $30')">Book & Pay</button>
+        🗑️ 1 Bin - $30
+        <button onclick="selectService('1 Bin - $30')">Book</button>
     </div>
+
     <div class="card">
-        <span class="card-icon">🔥</span>
-        <span class="emoji" style="top:5px; right:15px;">💎</span>
-        <h2>2 Bin Deal</h2>
-        <p class="price">$50</p>
-        <button class="led-button" onclick="showForm('2 Bins - $50')">Book & Pay</button>
+        🔥 2 Bins - $50
+        <button onclick="selectService('2 Bins - $50')">Book</button>
     </div>
+
     <div class="card">
-        <span class="card-icon">🌿</span>
-        <span class="emoji" style="bottom:10px; left:20px;">⚡</span>
-        <h2>Grass Cutting</h2>
-        <p class="price">$25</p>
-        <button class="led-button" onclick="showForm('Grass Cutting - $25')">Book & Pay</button>
+        🌿 Grass - $25
+        <button onclick="selectService('Grass - $25')">Book</button>
     </div>
 </div>
 
 <!-- GALLERY -->
-<h2 id="gallery" class="section-title flicker">Before / After</h2>
-<div class="gallery">
-    <img src="https://via.placeholder.com/240?text=Before+Bin">
-    <img src="https://via.placeholder.com/240?text=After+Bin">
-    <img src="https://via.placeholder.com/240?text=Lawn+Before">
-    <img src="https://via.placeholder.com/240?text=Lawn+After">
+<div class="page">
+    <h1>Photos</h1>
+    <p>Before / After coming soon</p>
 </div>
 
-<!-- MAP -->
-<h2 class="section-title flicker">Service Area</h2>
-<div style="text-align:center;" class="map-container">
-    <iframe width="90%" height="260" style="border:0;border-radius:12px;" 
-    src="https://maps.google.com/maps?q=Tulsa,Oklahoma&z=11&output=embed"></iframe>
-</div>
+<!-- BOOK -->
+<div class="page">
+    <h1>Book</h1>
+    <p id="serviceText"></p>
 
-<!-- CHECKOUT -->
-<div id="checkout">
-    <h2 class="flicker">Book & Pay</h2>
-    <p id="serviceChosen"></p>
-    <form id="bookingForm" action="https://formspree.io/f/xeeprrlv" method="POST" target="_blank">
-        <input type="text" name="name" placeholder="Name" required><br>
-        <input type="phone" name="phone" placeholder="Phone" required><br>
-        <input type="email" name="email" placeholder="Email" required><br>
+    <form id="form" action="https://formspree.io/f/xeeprrlv" method="POST">
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="text" name="phone" placeholder="Phone" required>
+        <input type="email" name="email" placeholder="Email" required>
         <input type="date" name="date" required>
         <input type="time" name="time" required>
         <input type="hidden" name="service" id="serviceInput">
-        <button type="submit" class="led-button">Submit & Pay Cash App</button>
+        <button type="submit">Pay with Cash App</button>
     </form>
-    <p>Support: 832-370-6594</p>
+
+    <p style="text-align:center;">📞 832-370-6594</p>
 </div>
 
-<!-- CONFIRMATION -->
-<div id="confirmation">
-    <h2 id="confirmMessage"></h2>
-    <p>Redirecting to Cash App...</p>
 </div>
+
+<!-- NAV -->
+<nav>
+    <button onclick="goToPage(0)">🏠</button>
+    <button onclick="goToPage(1)">🧼</button>
+    <button onclick="goToPage(2)">📸</button>
+    <button onclick="goToPage(3)">💳</button>
+</nav>
 
 <script>
-// SERVICE FORM
-function showForm(service){
-    document.getElementById("checkout").style.display="block";
-    document.getElementById("serviceChosen").innerText="Selected Service: "+service;
-    document.getElementById("serviceInput").value=service;
-    window.scrollTo({top:document.body.scrollHeight, behavior:'smooth'});
+let currentPage = 0;
+const app = document.getElementById('app');
+
+/* NAV CLICK */
+function goToPage(index){
+    currentPage = index;
+    app.style.transform = `translateX(-${index * 100}%)`;
 }
 
-// FORM SUBMIT + CASH APP REDIRECT
-document.getElementById('bookingForm').addEventListener('submit', function(e){
+/* SERVICE SELECT */
+function selectService(service){
+    document.getElementById("serviceText").innerText = "Selected: " + service;
+    document.getElementById("serviceInput").value = service;
+    goToPage(3);
+}
+
+/* SWIPE SUPPORT */
+let startX = 0;
+
+document.addEventListener("touchstart", e => {
+    startX = e.touches[0].clientX;
+});
+
+document.addEventListener("touchend", e => {
+    let endX = e.changedTouches[0].clientX;
+    let diff = startX - endX;
+
+    if(diff > 50 && currentPage < 3) currentPage++;
+    if(diff < -50 && currentPage > 0) currentPage--;
+
+    goToPage(currentPage);
+});
+
+/* LOADER */
+window.onload = () => {
+    setTimeout(() => {
+        document.getElementById("loader").style.display = "none";
+    }, 1200);
+};
+
+/* FORM SUBMIT */
+document.getElementById("form").addEventListener("submit", function(e){
     e.preventDefault();
-    const service=document.getElementById('serviceInput').value;
-    document.getElementById('confirmMessage').innerText=`Thanks! Your booking for ${service} is confirmed.`;
-    document.getElementById('confirmation').style.display='block';
-    fetch(this.action,{method:"POST", body:new FormData(this), headers:{'Accept':'application/json'}})
-    .finally(()=>setTimeout(()=>{ window.location.href="https://cash.app/$Taeski09"; },1200));
+
+    fetch(this.action, {
+        method:"POST",
+        body:new FormData(this)
+    }).then(() => {
+        window.location.href = "https://cash.app/$Taeski09";
+    });
 });
 </script>
 
-<footer>
-    © 2026 A.T.K FreshBin
-</footer>
 </body>
 </html>
