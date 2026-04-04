@@ -35,30 +35,54 @@ body {
 }
 @keyframes spin { to { transform:rotate(360deg); } }
 
-/* NAV */
+/* NAV TOP */
 nav {
     position:fixed;
-    bottom:0;
+    top:0;
     width:100%;
     background:#000;
     display:flex;
-    justify-content:space-around;
+    justify-content:center;
     padding:10px 0;
-    border-top:2px solid #00c6ff;
+    border-bottom:2px solid #00c6ff;
     z-index: 100;
+    gap:40px;
 }
 nav button {
     background:none;
     border:none;
     color:#00c6ff;
-    font-size:16px;
+    font-size:24px;
     cursor:pointer;
+    position:relative;
+}
+
+/* TOOLTIP LABELS */
+nav button::after {
+    content: attr(data-name);
+    position:absolute;
+    top:40px;
+    left:50%;
+    transform:translateX(-50%);
+    background:#00c6ff;
+    color:#000;
+    padding:3px 8px;
+    border-radius:6px;
+    font-size:14px;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 0.2s;
+    white-space: nowrap;
+}
+nav button:hover::after,
+nav button:focus::after {
+    opacity:1;
 }
 
 /* SECTIONS */
 section {
     min-height:100vh;
-    padding:40px 20px;
+    padding:80px 20px 40px 20px; /* padding top bigger to clear nav */
     box-sizing:border-box;
 }
 
@@ -106,8 +130,15 @@ input {
     <p>Loading A.T.K...</p>
 </div>
 
-<!-- SECTIONS -->
+<!-- NAV TOP -->
+<nav>
+    <button data-name="Home" onclick="scrollToSection('home')">🏠</button>
+    <button data-name="Services" onclick="scrollToSection('services')">🧼</button>
+    <button data-name="Gallery" onclick="scrollToSection('gallery')">📸</button>
+    <button data-name="Book" onclick="scrollToSection('book')">💳</button>
+</nav>
 
+<!-- SECTIONS -->
 <section id="home">
     <h1>A.T.K FreshBin</h1>
     <p style="text-align:center;">Premium Bin Cleaning</p>
@@ -153,14 +184,6 @@ input {
 
     <p style="text-align:center;">📞 832-370-6594</p>
 </section>
-
-<!-- NAV -->
-<nav>
-    <button onclick="scrollToSection('home')">🏠</button>
-    <button onclick="scrollToSection('services')">🧼</button>
-    <button onclick="scrollToSection('gallery')">📸</button>
-    <button onclick="scrollToSection('book')">💳</button>
-</nav>
 
 <script>
 /* SCROLL FUNCTION */
