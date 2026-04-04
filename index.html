@@ -4,17 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>A.T.K FreshBin</title>
-
 <style>
 body {
     margin:0;
     font-family:'Segoe UI';
     background:#111;
     color:white;
-    overflow:hidden;
+    scroll-behavior: smooth;
 }
 
-/* LOADING SCREEN */
+/* LOADER */
 #loader {
     position:fixed;
     width:100%;
@@ -46,27 +45,21 @@ nav {
     justify-content:space-around;
     padding:10px 0;
     border-top:2px solid #00c6ff;
+    z-index: 100;
 }
 nav button {
     background:none;
     border:none;
     color:#00c6ff;
     font-size:16px;
+    cursor:pointer;
 }
 
-/* PAGES */
-#app {
-    display:flex;
-    width:400%;
-    height:100vh;
-    transition:transform 0.5s ease;
-}
-
-.page {
-    width:100%;
-    flex-shrink:0;
-    padding:20px;
-    overflow-y:auto;
+/* SECTIONS */
+section {
+    min-height:100vh;
+    padding:40px 20px;
+    box-sizing:border-box;
 }
 
 /* HEADER */
@@ -80,8 +73,9 @@ h1 {
     background:#222;
     padding:20px;
     border-radius:20px;
-    margin:20px;
+    margin:20px auto;
     text-align:center;
+    max-width:400px;
     box-shadow:0 0 20px #00c6ff;
 }
 .card button {
@@ -90,6 +84,7 @@ h1 {
     padding:10px;
     border-radius:10px;
     margin-top:10px;
+    cursor:pointer;
 }
 
 /* INPUT */
@@ -103,7 +98,6 @@ input {
 }
 </style>
 </head>
-
 <body>
 
 <!-- LOADER -->
@@ -112,17 +106,14 @@ input {
     <p>Loading A.T.K...</p>
 </div>
 
-<!-- APP -->
-<div id="app">
+<!-- SECTIONS -->
 
-<!-- HOME -->
-<div class="page">
+<section id="home">
     <h1>A.T.K FreshBin</h1>
     <p style="text-align:center;">Premium Bin Cleaning</p>
-</div>
+</section>
 
-<!-- SERVICES -->
-<div class="page">
+<section id="services">
     <h1>Services</h1>
 
     <div class="card">
@@ -139,16 +130,14 @@ input {
         🌿 Grass - $25
         <button onclick="selectService('Grass - $25')">Book</button>
     </div>
-</div>
+</section>
 
-<!-- GALLERY -->
-<div class="page">
+<section id="gallery">
     <h1>Photos</h1>
     <p>Before / After coming soon</p>
-</div>
+</section>
 
-<!-- BOOK -->
-<div class="page">
+<section id="book">
     <h1>Book</h1>
     <p id="serviceText"></p>
 
@@ -163,51 +152,28 @@ input {
     </form>
 
     <p style="text-align:center;">📞 832-370-6594</p>
-</div>
-
-</div>
+</section>
 
 <!-- NAV -->
 <nav>
-    <button onclick="goToPage(0)">🏠</button>
-    <button onclick="goToPage(1)">🧼</button>
-    <button onclick="goToPage(2)">📸</button>
-    <button onclick="goToPage(3)">💳</button>
+    <button onclick="scrollToSection('home')">🏠</button>
+    <button onclick="scrollToSection('services')">🧼</button>
+    <button onclick="scrollToSection('gallery')">📸</button>
+    <button onclick="scrollToSection('book')">💳</button>
 </nav>
 
 <script>
-let currentPage = 0;
-const app = document.getElementById('app');
-
-/* NAV CLICK */
-function goToPage(index){
-    currentPage = index;
-    app.style.transform = `translateX(-${index * 100}%)`;
+/* SCROLL FUNCTION */
+function scrollToSection(id){
+    document.getElementById(id).scrollIntoView({behavior:'smooth'});
 }
 
 /* SERVICE SELECT */
 function selectService(service){
     document.getElementById("serviceText").innerText = "Selected: " + service;
     document.getElementById("serviceInput").value = service;
-    goToPage(3);
+    scrollToSection('book');
 }
-
-/* SWIPE SUPPORT */
-let startX = 0;
-
-document.addEventListener("touchstart", e => {
-    startX = e.touches[0].clientX;
-});
-
-document.addEventListener("touchend", e => {
-    let endX = e.changedTouches[0].clientX;
-    let diff = startX - endX;
-
-    if(diff > 50 && currentPage < 3) currentPage++;
-    if(diff < -50 && currentPage > 0) currentPage--;
-
-    goToPage(currentPage);
-});
 
 /* LOADER */
 window.onload = () => {
