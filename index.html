@@ -23,19 +23,19 @@ nav {
     justify-content:center;
     padding:12px;
     border-bottom:2px solid #00eaff;
-    gap:30px;
+    gap:25px;
+    z-index:100;
 }
 nav button {
     background:none;
     border:none;
     color:#00eaff;
-    font-size:22px;
+    font-size:20px;
     cursor:pointer;
 }
 
 /* SECTIONS */
 section {
-    min-height:100vh;
     padding:90px 20px;
 }
 h1 {
@@ -43,7 +43,7 @@ h1 {
     text-shadow:0 0 20px #00eaff;
 }
 
-/* CARD */
+/* CARDS */
 .card {
     background:#111827;
     padding:20px;
@@ -53,23 +53,17 @@ h1 {
     text-align:center;
     box-shadow:0 0 15px #00eaff55;
 }
-.card button {
-    margin-top:10px;
+button {
+    cursor:pointer;
 }
-
-/* INPUT */
-input, select {
-    display:block;
-    margin:10px auto;
-    padding:12px;
-    width:80%;
-    border-radius:10px;
+.main-btn {
+    background:#00eaff;
+    color:#000;
+    padding:12px 20px;
     border:none;
-    background:#0f172a;
-    color:white;
+    border-radius:10px;
+    margin:5px;
 }
-
-/* BUTTON */
 .pay-btn {
     background:#00eaff;
     color:#000;
@@ -79,20 +73,20 @@ input, select {
     width:80%;
     font-weight:bold;
 }
-.map-btn {
-    background:#00eaff;
-    color:#000;
-    padding:10px;
-    border:none;
-    border-radius:10px;
-    width:80%;
-}
-
-/* TOTAL */
 .total-box {
     text-align:center;
     font-size:22px;
     color:#00eaff;
+}
+.dashboard {
+    max-width:800px;
+    margin:auto;
+}
+.booking {
+    background:#111827;
+    padding:15px;
+    margin:10px;
+    border-radius:10px;
 }
 </style>
 </head>
@@ -103,51 +97,43 @@ input, select {
     <button onclick="scrollToSection('home')">🏠</button>
     <button onclick="scrollToSection('services')">🧼</button>
     <button onclick="scrollToSection('book')">💳</button>
+    <button onclick="scrollToSection('dashboard')">📊</button>
 </nav>
 
+<!-- HOME -->
 <section id="home">
     <h1>A.T.K. FreshBin</h1>
-    <p style="text-align:center;">Premium Trash Bin Cleaning</p>
+    <p>Premium Trash Bin Cleaning</p>
+    <button class="main-btn" onclick="scrollToSection('services')">View Services</button>
+    <button class="main-btn" onclick="scrollToSection('book')">Book Now</button>
 </section>
 
+<!-- SERVICES -->
 <section id="services">
     <h1>Services</h1>
-
-    <div class="card">🗑️ 1 Bin - $30 <br>
-        <button onclick="addService('1 Bin',30)">Add</button>
+    <div class="card">🌿 Grass Cutting - $25<br>
+        <button onclick="addService('Grass Cutting',25)">Add</button>
     </div>
-
-    <div class="card">🔥 2 Bins - $50 <br>
-        <button onclick="addService('2 Bins',50)">Add</button>
+    <div class="card">🗑️ 1 Trash Bin - $30<br>
+        <button onclick="addService('1 Trash Bin',30)">Add</button>
     </div>
-
-    <div class="card">🌿 Grass - $25 <br>
-        <button onclick="addService('Grass',25)">Add</button>
+    <div class="card">🔥 2 Trash Bins - $50<br>
+        <button onclick="addService('2 Trash Bins',50)">Add</button>
     </div>
-
-    <div style="text-align:center;">
-        <button onclick="clearServices()">Reset Services</button>
-    </div>
+    <div style="text-align:center;"><button onclick="clearServices()">Reset</button></div>
 </section>
 
+<!-- BOOK -->
 <section id="book">
     <h1>Book</h1>
-
     <p id="serviceList" style="text-align:center;"></p>
-
     <div class="total-box" id="totalPrice">Total: $0</div>
 
     <form id="form">
         <input type="text" name="name" placeholder="Name" required>
         <input type="text" name="phone" placeholder="Phone" required>
-        <input type="email" name="email" placeholder="Email" required>
-
-        <input type="text" id="address" name="address" placeholder="Your Address" required>
-
-        <button type="button" class="map-btn" onclick="openMap()">Open Map 📍</button>
-
+        <input type="text" id="address" name="address" placeholder="Address" required>
         <input type="date" name="date" required>
-
         <select name="time" required>
             <option value="">Select Time</option>
             <option>9:00 AM</option>
@@ -159,68 +145,49 @@ input, select {
             <option>3:00 PM</option>
             <option>4:00 PM</option>
             <option>5:00 PM</option>
-            <option>6:00 PM</option>
         </select>
-
         <input type="hidden" id="servicesInput" name="services">
         <input type="hidden" id="priceInput" name="price">
-
         <button class="pay-btn" type="submit">Pay with Cash App 💸</button>
     </form>
 </section>
 
+<!-- DASHBOARD -->
+<section id="dashboard">
+    <h1>Owner Dashboard</h1>
+    <div id="dashboardLogin" style="text-align:center;">
+        <input type="password" id="adminPass" placeholder="Enter Admin Password">
+        <button onclick="checkPassword()">Login</button>
+    </div>
+    <div class="dashboard" id="dashboardList" style="display:none;"></div>
+    <div style="text-align:center;"><button class="main-btn" onclick="clearBookings()">Clear All</button></div>
+</section>
+
 <script>
-let services = {};
-let total = 0;
+let services={};
+let total=0;
 
-/* ADD SERVICE (NO DUP BUGS) */
+/* SERVICES */
 function addService(name, price){
-    if(!services[name]){
-        services[name] = 0;
-    }
+    if(!services[name]) services[name]=0;
     services[name]++;
-
-    total += price;
-
+    total+=price;
     updateDisplay();
-    scrollToSection('book');
 }
 
-/* RESET */
 function clearServices(){
-    services = {};
-    total = 0;
+    services={};
+    total=0;
     updateDisplay();
 }
 
-/* UPDATE UI */
 function updateDisplay(){
-    let list = [];
-
-    for(let s in services){
-        list.push(s + " x" + services[s]);
-    }
-
-    document.getElementById("serviceList").innerText =
-        list.length ? "Selected: " + list.join(", ") : "No services selected";
-
-    document.getElementById("totalPrice").innerText =
-        "Total: $" + total;
-
-    document.getElementById("servicesInput").value =
-        list.join(", ");
-
-    document.getElementById("priceInput").value = total;
-}
-
-/* MAP */
-function openMap(){
-    let address = document.getElementById("address").value;
-    if(address){
-        window.open("https://www.google.com/maps/search/" + encodeURIComponent(address));
-    } else {
-        alert("Enter your address first");
-    }
+    let list=[];
+    for(let s in services){ list.push(s+" x"+services[s]); }
+    document.getElementById("serviceList").innerText=list.length ? "Selected: "+list.join(", ") : "";
+    document.getElementById("totalPrice").innerText="Total: $"+total;
+    document.getElementById("servicesInput").value=list.join(", ");
+    document.getElementById("priceInput").value=total;
 }
 
 /* SCROLL */
@@ -228,26 +195,71 @@ function scrollToSection(id){
     document.getElementById(id).scrollIntoView({behavior:'smooth'});
 }
 
-/* FORM */
+/* FORM SUBMIT */
 document.getElementById("form").addEventListener("submit", function(e){
     e.preventDefault();
+    if(total<=0){ alert("Select a service"); return; }
 
-    if(total <= 0){
-        alert("Select at least one service");
-        return;
-    }
+    let booking = {
+        name:this.name.value,
+        phone:this.phone.value,
+        address:this.address.value,
+        services:this.services.value,
+        total:total,
+        date:this.date.value,
+        time:this.time.value
+    };
 
-    fetch("https://formspree.io/f/xeeprrlv", {
+    // Save to JSONBin (replace with your key)
+    fetch("https://api.jsonbin.io/v3/b", {
         method:"POST",
-        body:new FormData(this)
-    })
-    .then(() => {
-        window.location.href = "https://cash.app/$Taeski09/" + total;
-    })
-    .catch(() => {
-        alert("Error sending booking");
+        headers: {
+            "Content-Type":"application/json",
+            "X-Master-Key":"YOUR_JSONBIN_KEY"
+        },
+        body: JSON.stringify(booking)
     });
+
+    // Save in localStorage too
+    let bookings=JSON.parse(localStorage.getItem("atkBookings")||"[]");
+    bookings.push(booking);
+    localStorage.setItem("atkBookings",JSON.stringify(bookings));
+
+    // Twilio text placeholder
+    console.log("Send SMS to "+booking.phone+" - Booking Confirmed!");
+
+    loadDashboard();
+    window.location.href="https://cash.app/$Taeski09/"+total;
 });
+
+/* DASHBOARD */
+function checkPassword(){
+    let pass=document.getElementById("adminPass").value;
+    if(pass==="admin123"){
+        document.getElementById("dashboardLogin").style.display="none";
+        document.getElementById("dashboardList").style.display="block";
+        loadDashboard();
+    }else{
+        alert("Incorrect password");
+    }
+}
+
+function loadDashboard(){
+    let container=document.getElementById("dashboardList");
+    container.innerHTML="";
+    let bookings=JSON.parse(localStorage.getItem("atkBookings")||"[]");
+    bookings.forEach(b=>{
+        let div=document.createElement("div");
+        div.className="booking";
+        div.innerHTML=`<b>${b.name}</b><br>${b.services}<br>$${b.total}<br>${b.date} - ${b.time}<br>📍 ${b.address}`;
+        container.appendChild(div);
+    });
+}
+
+function clearBookings(){
+    localStorage.removeItem("atkBookings");
+    loadDashboard();
+}
 </script>
 
 </body>
