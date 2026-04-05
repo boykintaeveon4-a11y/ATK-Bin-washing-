@@ -4,81 +4,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>A.T.K. FreshBin</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <style>
-body {
-    margin:0;
-    font-family:'Segoe UI';
-    background:#0a0f1c;
-    color:white;
-    overflow-x:hidden;
-}
-/* NAV */
-nav {
-    position:fixed;
-    top:0;
-    width:100%;
-    background:#05070f;
-    display:flex;
-    justify-content:center;
-    padding:12px;
-    border-bottom:2px solid #00eaff;
-    gap:25px;
-    z-index:100;
-}
-nav button {
-    background:none;
-    border:none;
-    color:#00eaff;
-    font-size:20px;
-    cursor:pointer;
-}
-/* PAGE SECTIONS */
-section { 
-    padding:90px 20px; 
-    position:absolute; 
-    width:100%; 
-    top:0; left:100%; 
-    opacity:0; 
-    transition: all 0.6s ease; 
-}
+body { margin:0; font-family:'Segoe UI'; background:#0f172a; color:white; overflow-x:hidden; }
+nav { position:fixed; top:0; width:100%; background:#1e293b; display:flex; justify-content:center; padding:12px; border-bottom:3px solid #22d3ee; gap:25px; z-index:100; }
+nav button { background:none; border:none; color:#22d3ee; font-size:20px; cursor:pointer; }
+section { padding:90px 20px; position:absolute; width:100%; top:0; left:100%; opacity:0; transition: all 0.6s ease; }
 section.active { left:0; opacity:1; }
-/* CARDS */
-.card {
-    background:#111827;
-    padding:20px;
-    margin:15px auto;
-    border-radius:15px;
-    max-width:400px;
-    text-align:center;
-    box-shadow:0 0 15px #00eaff55;
-    opacity:0;
-    transform:scale(0.5);
-    animation: pop 0.8s forwards;
-}
-.card:nth-child(1){animation-delay:0.2s;}
-.card:nth-child(2){animation-delay:0.4s;}
-.card:nth-child(3){animation-delay:0.6s;}
-.card:nth-child(4){animation-delay:0.8s;}
-@keyframes pop {
-    to { opacity:1; transform:scale(1); }
-}
-/* BUTTONS */
+.card { background:#1e293b; padding:20px; margin:15px auto; border-radius:15px; max-width:400px; text-align:center; box-shadow:0 0 20px #22d3ee77; opacity:0; transform:scale(0.5); animation: pop 0.8s forwards; }
+.card:nth-child(1){animation-delay:0.2s;} .card:nth-child(2){animation-delay:0.4s;} .card:nth-child(3){animation-delay:0.6s;} .card:nth-child(4){animation-delay:0.8s;}
+@keyframes pop { to { opacity:1; transform:scale(1); } }
 button { cursor:pointer; }
-.main-btn { background:#00eaff; color:#000; padding:12px 20px; border:none; border-radius:10px; margin:5px; transition:0.3s; }
+.main-btn { background:#22d3ee; color:#000; padding:12px 20px; border:none; border-radius:10px; margin:5px; transition:0.3s; }
 .main-btn:hover { transform:scale(1.05); }
-.pay-btn { background:#00ff77; color:#000; padding:12px; border:none; border-radius:10px; width:80%; font-weight:bold; }
-.total-box { text-align:center; font-size:22px; color:#00eaff; }
+.pay-btn { background:#10b981; color:#000; padding:12px; border:none; border-radius:10px; width:80%; font-weight:bold; }
+.total-box { text-align:center; font-size:22px; color:#22d3ee; }
 .dashboard { max-width:800px; margin:auto; overflow-x:auto; }
-.booking { background:#111827; padding:15px; margin:10px; border-radius:10px; }
+.booking { background:#1e293b; padding:15px; margin:10px; border-radius:10px; }
 #map { width:100%; height:250px; margin-top:10px; border-radius:10px; }
-/* HOME FEATURES */
 .features { display:flex; justify-content:center; flex-wrap:wrap; margin-top:40px; gap:20px; }
-.features .card { max-width:200px; box-shadow:0 0 15px #00eaff; }
-/* MOBILE ADJUSTMENTS */
-@media(max-width:768px){
-    nav{ flex-wrap:wrap; gap:10px;}
-    .dashboard{ overflow-x:scroll; }
-}
+.features .card { max-width:200px; box-shadow:0 0 20px #22d3ee; }
+@media(max-width:768px){ nav{ flex-wrap:wrap; gap:10px;} .dashboard{ overflow-x:scroll; } }
 </style>
 </head>
 <body>
@@ -90,7 +36,6 @@ button { cursor:pointer; }
     <button onclick="showPage('dashboard')">📊 Dashboard</button>
 </nav>
 
-<!-- HOME PAGE -->
 <section id="home" class="active">
     <h1>A.T.K. FreshBin</h1>
     <p>Premium Trash Bin Cleaning – Fast & Affordable</p>
@@ -106,7 +51,6 @@ button { cursor:pointer; }
     </div>
 </section>
 
-<!-- SERVICES PAGE -->
 <section id="services">
     <h1>Services</h1>
     <div class="card">🌿 Grass Cutting - $25<br><button onclick="addService('Grass Cutting',25)">Add</button></div>
@@ -116,7 +60,6 @@ button { cursor:pointer; }
     <div style="text-align:center;"><button class="main-btn" onclick="showPage('book')">Go to Booking</button></div>
 </section>
 
-<!-- BOOKING PAGE -->
 <section id="book">
     <h1>Book</h1>
     <p id="serviceList" style="text-align:center;"></p>
@@ -146,7 +89,6 @@ button { cursor:pointer; }
     </form>
 </section>
 
-<!-- DASHBOARD PAGE -->
 <section id="dashboard">
     <h1>Owner Dashboard</h1>
     <div id="dashboardLogin" style="text-align:center;">
@@ -157,61 +99,21 @@ button { cursor:pointer; }
     <div style="text-align:center;"><button class="main-btn" onclick="clearBookings()">Clear All</button></div>
 </section>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-let services={};
-let total=0;
+let services={}, total=0;
+function showPage(id){document.querySelectorAll('section').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); if(id==='book') updateDisplay();}
+function addService(name, price){if(!services[name]) services[name]=0; services[name]++; total+=price; updateDisplay();}
+function clearServices(){services={}; total=0; updateDisplay();}
+function updateDisplay(){let list=[]; for(let s in services) list.push(s+" x"+services[s]); document.getElementById("serviceList").innerText=list.length?"Selected: "+list.join(", "):""; document.getElementById("totalPrice").innerText="Total: $"+total; document.getElementById("servicesInput").value=list.join(", "); document.getElementById("priceInput").value=total;}
 
-/* PAGE NAVIGATION */
-function showPage(id){
-    document.querySelectorAll('section').forEach(s=>{
-        if(s.id===id){
-            s.classList.add('active');
-        } else {
-            s.classList.remove('active');
-        }
-    });
-    if(id==='book') updateDisplay();
-}
-
-/* SERVICES */
-function addService(name, price){
-    if(!services[name]) services[name]=0;
-    services[name]++;
-    total+=price;
-    updateDisplay();
-}
-function clearServices(){ services={}; total=0; updateDisplay(); }
-function updateDisplay(){
-    let list=[];
-    for(let s in services){ list.push(s+" x"+services[s]); }
-    document.getElementById("serviceList").innerText = list.length ? "Selected: "+list.join(", ") : "";
-    document.getElementById("totalPrice").innerText = "Total: $"+total;
-    document.getElementById("servicesInput").value = list.join(", ");
-    document.getElementById("priceInput").value = total;
-}
-
-/* FORM SUBMIT */
+/* FORM */
 document.getElementById("form").addEventListener("submit", function(e){
     e.preventDefault();
-    if(total<=0){ alert("Select a service"); return; }
-
-    let booking={
-        name:this.name.value,
-        phone:this.phone.value,
-        address:this.address.value,
-        services:this.services.value,
-        total:total,
-        date:this.date.value,
-        time:this.time.value
-    };
-
-    let bookings=JSON.parse(localStorage.getItem("atkBookings")||"[]");
-    bookings.push(booking);
-    localStorage.setItem("atkBookings",JSON.stringify(bookings));
-
-    let amount=total;
-    window.open(`https://cash.app/$Taeski09/${amount}`,'_blank');
-    alert("Booking saved! Please complete payment in the new Cash App tab.");
+    if(total<=0){alert("Select a service"); return;}
+    let booking={name:this.name.value, phone:this.phone.value, address:this.address.value, services:this.services.value, total:total, date:this.date.value, time:this.time.value};
+    let bookings=JSON.parse(localStorage.getItem("atkBookings")||"[]"); bookings.push(booking); localStorage.setItem("atkBookings",JSON.stringify(bookings));
+    let amount=total; window.open(`https://cash.app/$Taeski09/${amount}`, '_blank'); alert("Booking saved! Complete payment in the new Cash App tab.");
 });
 
 /* DASHBOARD */
@@ -222,45 +124,34 @@ function checkPassword(){
         document.getElementById("dashboardLogin").style.display="none";
         document.getElementById("dashboardList").style.display="block";
         loadDashboard();
-        if(!dashboardInterval){
-            dashboardInterval = setInterval(loadDashboard,1000);
-        }
-    }else{ alert("Incorrect password"); }
+        if(!dashboardInterval) dashboardInterval=setInterval(loadDashboard,1000);
+    }else{alert("Incorrect password");}
 }
 function loadDashboard(){
-    let container=document.getElementById("dashboardList");
-    container.innerHTML="";
+    let container=document.getElementById("dashboardList"); container.innerHTML="";
     let bookings=JSON.parse(localStorage.getItem("atkBookings")||"[]");
-    bookings.forEach(b=>{
-        let div=document.createElement("div");
-        div.className="booking";
-        div.innerHTML=`<b>${b.name}</b><br>${b.services}<br>$${b.total}<br>${b.date} - ${b.time}<br>📍 ${b.address}`;
-        container.appendChild(div);
-    });
+    bookings.forEach(b=>{ let div=document.createElement("div"); div.className="booking"; div.innerHTML=`<b>${b.name}</b><br>${b.services}<br>$${b.total}<br>${b.date} - ${b.time}<br>📍 ${b.address}`; container.appendChild(div); });
 }
-function clearBookings(){
-    localStorage.removeItem("atkBookings");
-    loadDashboard();
-}
+function clearBookings(){localStorage.removeItem("atkBookings"); loadDashboard();}
 
-/* MAP */
-let map, marker, autocomplete;
-function initMap(){
-    map = new google.maps.Map(document.getElementById("map"), { zoom:15, center:{lat:29.7604,lng:-95.3698} });
-    marker = new google.maps.Marker({ map: map, position:{lat:29.7604,lng:-95.3698} });
+/* LEAFLET MAP */
+let map = L.map('map').setView([29.7604, -95.3698], 13);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:19}).addTo(map);
+let marker = L.marker([29.7604, -95.3698]).addTo(map);
 
-    autocomplete = new google.maps.places.Autocomplete(document.getElementById("address"));
-    autocomplete.bindTo("bounds", map);
-    autocomplete.addListener("place_changed", () => {
-        const place = autocomplete.getPlace();
-        if (!place.geometry) return;
-        map.setCenter(place.geometry.location);
-        map.setZoom(17);
-        marker.setPosition(place.geometry.location);
-    });
-}
+// Geocode address input with Nominatim
+const addressInput = document.getElementById('address');
+addressInput.addEventListener('input', async ()=>{
+    let val = addressInput.value;
+    if(val.length<3) return;
+    let url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(val)}`;
+    let res = await fetch(url); let data = await res.json();
+    if(data.length>0){
+        let lat=data[0].lat, lon=data[0].lon;
+        marker.setLatLng([lat,lon]);
+        map.setView([lat,lon],16);
+    }
+});
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places&callback=initMap" async defer></script>
-
 </body>
 </html>
