@@ -22,6 +22,9 @@ button { cursor:pointer; }
 .service-btn:hover { background:#38bdf8; }
 .features { display:flex; justify-content:center; flex-wrap:wrap; margin-top:40px; gap:20px; }
 .features .card { max-width:200px; }
+/* Dashboard login */
+#dashboardLogin { text-align:center; margin-top:20px; }
+#dashboardLogin input { margin:5px; padding:10px; border-radius:8px; border:none; width:60%; }
 </style>
 </head>
 <body>
@@ -33,6 +36,7 @@ button { cursor:pointer; }
 <button onclick="showPage('dashboard')">📊</button>
 </nav>
 
+<!-- HOME -->
 <section id="home" class="active">
 <h1>A.T.K. FreshBin</h1>
 <p>Fast • Affordable • Reliable</p>
@@ -44,6 +48,7 @@ button { cursor:pointer; }
 </div>
 </section>
 
+<!-- SERVICES -->
 <section id="services">
 <h1>Services</h1>
 <div class="card">🌿 Grass Cutting - $25<br><button class="service-btn" onclick="addService('Grass Cutting',25)">+ Add</button></div>
@@ -53,6 +58,7 @@ button { cursor:pointer; }
 <div style="text-align:center;"><button class="main-btn" onclick="showPage('book')">Continue</button></div>
 </section>
 
+<!-- BOOKING -->
 <section id="book">
 <h1>Book</h1>
 <p id="serviceList"></p>
@@ -73,14 +79,20 @@ button { cursor:pointer; }
 </form>
 </section>
 
+<!-- DASHBOARD -->
 <section id="dashboard">
 <h1>Dashboard</h1>
+<div id="dashboardLogin">
+<input type="password" id="dashboardPassword" placeholder="Admin Password">
+<button onclick="loginDashboard()">Login</button>
+</div>
 <div id="dashboardList"></div>
 </section>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://js.stripe.com/v3/"></script>
 <script>
+// Pages & sliding
 let services={}, total=0;
 function showPage(id){
     document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
@@ -88,7 +100,7 @@ function showPage(id){
     updateDisplay();
 }
 
-// Services selection
+// Services
 function addService(name,price){ services[name]=(services[name]||0)+1; total+=price; updateDisplay(); }
 function clearServices(){ services={}; total=0; updateDisplay(); }
 function updateDisplay(){ 
@@ -98,8 +110,8 @@ function updateDisplay(){
     document.getElementById("totalPrice").innerText="Total: $"+total;
 }
 
-// Stripe payments
-const stripe=Stripe('YOUR_STRIPE_PUBLISHABLE_KEY'); // Replace with your Stripe publishable key
+// Stripe + Cash App
+const stripe=Stripe('YOUR_STRIPE_PUBLISHABLE_KEY'); // replace with your key
 document.getElementById('stripePayBtn').onclick=async()=>{
     if(total<=0)return alert('Select service');
     const bookingData={
@@ -111,7 +123,7 @@ document.getElementById('stripePayBtn').onclick=async()=>{
         time:document.querySelector('select[name="time"]').value,
         address:document.querySelector('input[name="address"]').value
     };
-    await fetch('http://localhost:3000/create-checkout-session',{
+    await fetch('/create-checkout-session',{
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify(bookingData)
@@ -119,19 +131,16 @@ document.getElementById('stripePayBtn').onclick=async()=>{
       .then(s=>stripe.redirectToCheckout({sessionId:s.id}));
     alert('Booking sent! Owner notified 🔔');
 };
-
-// Cash App
 document.getElementById('cashAppBtn').onclick=()=>{
     if(total<=0)return alert('Select service');
     window.open(`https://cash.app/$Taeski09/${total}`);
     alert('Booking sent! Owner notified 🔔');
 };
 
-// ===== Map setup =====
+// Map
 let map=L.map('map').setView([29.7,-95.3],13);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 let marker=L.marker([29.7,-95.3]).addTo(map);
-
 document.getElementById('address').addEventListener('input', async e=>{
     let val=e.target.value;
     if(val.length<3) return;
@@ -143,9 +152,18 @@ document.getElementById('address').addEventListener('input', async e=>{
     }
 });
 
-// ===== Dashboard live update =====
+// Dashboard login & live update
+const ADMIN_PASSWORD='1234'; // change to your password
+function loginDashboard(){
+    const pass=document.getElementById('dashboardPassword').value;
+    if(pass===ADMIN_PASSWORD){
+        document.getElementById('dashboardLogin').style.display='none';
+        updateDashboard();
+        setInterval(updateDashboard,2000);
+    } else alert('Incorrect password!');
+}
 async function updateDashboard(){
-    const res = await fetch('http://localhost:3000/bookings');
+    const res = await fetch('/bookings');
     const data = await res.json();
     const dash = document.getElementById('dashboardList');
     dash.innerHTML = '';
@@ -156,8 +174,6 @@ async function updateDashboard(){
         dash.appendChild(div);
     });
 }
-setInterval(updateDashboard,2000);
 </script>
-
 </body>
 </html>
