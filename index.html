@@ -52,12 +52,33 @@ button { cursor:pointer; }
 </section>
 
 <section id="services">
-    <h1>Services</h1>
-    <div class="card">🌿 Grass Cutting - $25<br><button onclick="addService('Grass Cutting',25)">Add</button></div>
-    <div class="card">🗑️ 1 Trash Bin - $30<br><button onclick="addService('1 Trash Bin',30)">Add</button></div>
-    <div class="card">🔥 2 Trash Bins - $50<br><button onclick="addService('2 Trash Bins',50)">Add</button></div>
-    <div style="text-align:center;"><button onclick="clearServices()">Reset</button></div>
-    <div style="text-align:center;"><button class="main-btn" onclick="showPage('book')">Go to Booking</button></div>
+    <h1 style="text-align:center;">Services</h1>
+    <div class="features" style="justify-content:center; gap:20px; flex-wrap:wrap;">
+        <div class="card">
+            🌿 <b>Grass Cutting</b><br>$25
+            <div style="margin-top:10px;">
+                <button class="main-btn" onclick="addService('Grass Cutting',25)">Add Service</button>
+            </div>
+        </div>
+        <div class="card">
+            🗑️ <b>1 Trash Bin</b><br>$30
+            <div style="margin-top:10px;">
+                <button class="main-btn" onclick="addService('1 Trash Bin',30)">Add Service</button>
+            </div>
+        </div>
+        <div class="card">
+            🔥 <b>2 Trash Bins</b><br>$50
+            <div style="margin-top:10px;">
+                <button class="main-btn" onclick="addService('2 Trash Bins',50)">Add Service</button>
+            </div>
+        </div>
+    </div>
+    <div style="text-align:center; margin-top:20px;">
+        <button class="main-btn" onclick="clearServices()">Reset Selections</button>
+    </div>
+    <div style="text-align:center; margin-top:10px;">
+        <button class="main-btn" onclick="showPage('book')">Proceed to Booking</button>
+    </div>
 </section>
 
 <section id="book">
@@ -102,25 +123,49 @@ button { cursor:pointer; }
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 let services={}, total=0;
-function showPage(id){document.querySelectorAll('section').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); if(id==='book') updateDisplay();}
-function addService(name, price){if(!services[name]) services[name]=0; services[name]++; total+=price; updateDisplay();}
+
+function showPage(id){
+    document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    if(id==='book') updateDisplay();
+}
+
+function addService(name, price){
+    if(!services[name]) services[name]=0; 
+    services[name]++; 
+    total+=price; 
+    updateDisplay();
+}
+
 function clearServices(){services={}; total=0; updateDisplay();}
-function updateDisplay(){let list=[]; for(let s in services) list.push(s+" x"+services[s]); document.getElementById("serviceList").innerText=list.length?"Selected: "+list.join(", "):""; document.getElementById("totalPrice").innerText="Total: $"+total; document.getElementById("servicesInput").value=list.join(", "); document.getElementById("priceInput").value=total;}
+
+function updateDisplay(){
+    let list=[]; 
+    for(let s in services) list.push(s+" x"+services[s]); 
+    document.getElementById("serviceList").innerText=list.length?"Selected: "+list.join(", "):""; 
+    document.getElementById("totalPrice").innerText="Total: $"+total; 
+    document.getElementById("servicesInput").value=list.join(", "); 
+    document.getElementById("priceInput").value=total;
+}
 
 /* FORM */
 document.getElementById("form").addEventListener("submit", function(e){
     e.preventDefault();
     if(total<=0){alert("Select a service"); return;}
     let booking={name:this.name.value, phone:this.phone.value, address:this.address.value, services:this.services.value, total:total, date:this.date.value, time:this.time.value};
-    let bookings=JSON.parse(localStorage.getItem("atkBookings")||"[]"); bookings.push(booking); localStorage.setItem("atkBookings",JSON.stringify(bookings));
-    let amount=total; window.open(`https://cash.app/$Taeski09/${amount}`, '_blank'); alert("Booking saved! Complete payment in the new Cash App tab.");
+    let bookings=JSON.parse(localStorage.getItem("atkBookings")||"[]"); 
+    bookings.push(booking); 
+    localStorage.setItem("atkBookings",JSON.stringify(bookings));
+    let amount=total; 
+    window.open(`https://cash.app/$Taeski09/${amount}`, '_blank'); 
+    alert("Booking saved! Complete payment in the new Cash App tab.");
 });
 
 /* DASHBOARD */
 let dashboardInterval;
 function checkPassword(){
     let pass=document.getElementById("adminPass").value;
-    if(pass==="admin123"){
+    if(pass==="ATK123"){
         document.getElementById("dashboardLogin").style.display="none";
         document.getElementById("dashboardList").style.display="block";
         loadDashboard();
@@ -130,7 +175,12 @@ function checkPassword(){
 function loadDashboard(){
     let container=document.getElementById("dashboardList"); container.innerHTML="";
     let bookings=JSON.parse(localStorage.getItem("atkBookings")||"[]");
-    bookings.forEach(b=>{ let div=document.createElement("div"); div.className="booking"; div.innerHTML=`<b>${b.name}</b><br>${b.services}<br>$${b.total}<br>${b.date} - ${b.time}<br>📍 ${b.address}`; container.appendChild(div); });
+    bookings.forEach(b=>{
+        let div=document.createElement("div"); 
+        div.className="booking"; 
+        div.innerHTML=`<b>${b.name}</b><br>${b.services}<br>$${b.total}<br>${b.date} - ${b.time}<br>📍 ${b.address}`;
+        container.appendChild(div);
+    });
 }
 function clearBookings(){localStorage.removeItem("atkBookings"); loadDashboard();}
 
@@ -155,4 +205,3 @@ addressInput.addEventListener('input', async ()=>{
 </script>
 </body>
 </html>
-
