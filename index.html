@@ -20,7 +20,6 @@ button { cursor:pointer; }
 .pay-btn { background:#10b981; color:#000; padding:12px; border:none; border-radius:10px; width:80%; font-weight:bold; }
 .total-box { text-align:center; font-size:22px; color:#22d3ee; }
 .dashboard { max-width:800px; margin:auto; overflow-x:auto; }
-.booking { background:#1e293b; padding:15px; margin:10px; border-radius:10px; }
 #map { width:100%; height:250px; margin-top:10px; border-radius:10px; }
 .features { display:flex; justify-content:center; flex-wrap:wrap; margin-top:40px; gap:20px; }
 .features .card { max-width:200px; box-shadow:0 0 20px #22d3ee; }
@@ -85,7 +84,8 @@ button { cursor:pointer; }
         </select>
         <input type="hidden" id="servicesInput" name="services">
         <input type="hidden" id="priceInput" name="price">
-        <button class="pay-btn" type="submit">Pay with Cash App 💸</button>
+        <button type="button" class="pay-btn" id="stripePayBtn">Pay with Card 💳</button>
+        <button type="button" class="pay-btn" style="background:#ef4444; margin-top:10px;" id="cashAppBtn">Pay with Cash App 💸</button>
     </form>
 </section>
 
@@ -100,6 +100,7 @@ button { cursor:pointer; }
 </section>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://js.stripe.com/v3/"></script>
 <script>
 let services={}, total=0;
 function showPage(id){document.querySelectorAll('section').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); if(id==='book') updateDisplay();}
@@ -107,16 +108,26 @@ function addService(name, price){if(!services[name]) services[name]=0; services[
 function clearServices(){services={}; total=0; updateDisplay();}
 function updateDisplay(){let list=[]; for(let s in services) list.push(s+" x"+services[s]); document.getElementById("serviceList").innerText=list.length?"Selected: "+list.join(", "):""; document.getElementById("totalPrice").innerText="Total: $"+total; document.getElementById("servicesInput").value=list.join(", "); document.getElementById("priceInput").value=total;}
 
-/* FORM */
-document.getElementById("form").addEventListener("submit", function(e){
-    e.preventDefault();
-    if(total<=0){alert("Select a service"); return;}
-    let booking={name:this.name.value, phone:this.phone.value, address:this.address.value, services:this.services.value, total:total, date:this.date.value, time:this.time.value};
-    let bookings=JSON.parse(localStorage.getItem("atkBookings")||"[]"); bookings.push(booking); localStorage.setItem("atkBookings",JSON.stringify(bookings));
-    let amount=total; window.open(`https://cash.app/$Taeski09/${amount}`, '_blank'); alert("Booking saved! Complete payment in the new Cash App tab.");
+/* Stripe Checkout */
+const stripe = Stripe('YOUR_STRIPE_PUBLISHABLE_KEY');
+document.getElementById('stripePayBtn').addEventListener('click', async ()=>{
+    if(total<=0){alert('Select at least one service'); return;}
+    const response = await fetch('/create-checkout-session', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({amount:total, services:Object.entries(services), name:document.querySelector('[name=name]').value})
+    });
+    const session = await response.json();
+    stripe.redirectToCheckout({sessionId:session.id});
 });
 
-/* DASHBOARD */
+/* Cash App */
+document.getElementById('cashAppBtn').addEventListener('click', ()=>{
+    if(total<=0){alert('Select at least one service'); return;}
+    window.open(`https://cash.app/$Taeski09/${total}`,'_blank');
+});
+
+/* Dashboard */
 let dashboardInterval;
 function checkPassword(){
     let pass=document.getElementById("adminPass").value;
@@ -134,12 +145,10 @@ function loadDashboard(){
 }
 function clearBookings(){localStorage.removeItem("atkBookings"); loadDashboard();}
 
-/* LEAFLET MAP */
+/* Leaflet Map */
 let map = L.map('map').setView([29.7604, -95.3698], 13);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:19}).addTo(map);
 let marker = L.marker([29.7604, -95.3698]).addTo(map);
-
-// Geocode address input with Nominatim
 const addressInput = document.getElementById('address');
 addressInput.addEventListener('input', async ()=>{
     let val = addressInput.value;
