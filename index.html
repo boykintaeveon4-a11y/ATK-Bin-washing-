@@ -11,209 +11,148 @@ nav { position:fixed; top:0; width:100%; background:#1e293b; display:flex; justi
 nav button { background:none; border:none; color:#22d3ee; font-size:20px; cursor:pointer; }
 section { padding:90px 20px; position:absolute; width:100%; top:0; left:100%; opacity:0; transition: all 0.6s ease; }
 section.active { left:0; opacity:1; }
-.card { background:#1e293b; padding:20px; margin:15px auto; border-radius:15px; max-width:400px; text-align:center; box-shadow:0 0 20px #22d3ee77; transition: transform 0.5s ease; }
-.card:hover { transform: scale(1.05) rotate(-2deg); }
+.card { background:#1e293b; padding:20px; margin:15px auto; border-radius:15px; max-width:400px; text-align:center; box-shadow:0 0 20px #22d3ee77; opacity:0; transform:scale(0.5); animation: pop 0.8s forwards; }
+.card:nth-child(1){animation-delay:0.2s;} .card:nth-child(2){animation-delay:0.4s;} .card:nth-child(3){animation-delay:0.6s;} .card:nth-child(4){animation-delay:0.8s;}
+@keyframes pop { to { opacity:1; transform:scale(1); } }
 button { cursor:pointer; }
-.main-btn { background:#22d3ee; color:#000; padding:12px 20px; border:none; border-radius:10px; margin:5px; }
-.pay-btn { background:#10b981; color:#000; padding:12px; border:none; border-radius:10px; width:80%; font-weight:bold; margin-top:10px; }
+.main-btn { background:#22d3ee; color:#000; padding:12px 20px; border:none; border-radius:10px; margin:5px; transition:0.3s; }
+.main-btn:hover { transform:scale(1.05); }
+.pay-btn { background:#10b981; color:#000; padding:12px; border:none; border-radius:10px; width:80%; font-weight:bold; }
 .total-box { text-align:center; font-size:22px; color:#22d3ee; }
+.dashboard { max-width:800px; margin:auto; overflow-x:auto; }
+.booking { background:#1e293b; padding:15px; margin:10px; border-radius:10px; }
 #map { width:100%; height:250px; margin-top:10px; border-radius:10px; }
-.service-btn { background:#0ea5e9; border:none; padding:8px 12px; border-radius:8px; color:white; margin-top:8px; }
-.service-btn:hover { background:#38bdf8; }
 .features { display:flex; justify-content:center; flex-wrap:wrap; margin-top:40px; gap:20px; }
-.features .card { max-width:200px; }
-/* Dashboard login */
-#dashboardLogin { text-align:center; margin-top:20px; }
-#dashboardLogin input { margin:5px; padding:10px; border-radius:8px; border:none; width:60%; }
+.features .card { max-width:200px; box-shadow:0 0 20px #22d3ee; }
+@media(max-width:768px){ nav{ flex-wrap:wrap; gap:10px;} .dashboard{ overflow-x:scroll; } }
 </style>
 </head>
 <body>
 
 <nav>
-<button onclick="showPage('home')">🏠</button>
-<button onclick="showPage('services')">🧼</button>
-<button onclick="showPage('book')">💳</button>
-<button onclick="showPage('dashboard')">📊</button>
+    <button onclick="showPage('home')">🏠 Home</button>
+    <button onclick="showPage('services')">🧼 Services</button>
+    <button onclick="showPage('book')">💳 Book</button>
+    <button onclick="showPage('dashboard')">📊 Dashboard</button>
 </nav>
 
-<!-- HOME -->
 <section id="home" class="active">
-<h1>A.T.K. FreshBin</h1>
-<p>Fast • Affordable • Reliable</p>
-<div class="features">
-<div class="card">⚡ Fast Service</div>
-<div class="card">💰 Affordable</div>
-<div class="card">🌿 Eco Safe</div>
-<div class="card">📞 24/7 Support</div>
-</div>
+    <h1>A.T.K. FreshBin</h1>
+    <p>Premium Trash Bin Cleaning – Fast & Affordable</p>
+    <div>
+        <button class="main-btn" onclick="showPage('services')">View Services</button>
+        <button class="main-btn" onclick="showPage('book')">Book Now</button>
+    </div>
+    <div class="features">
+        <div class="card">⚡ Lightning Fast<p>We respond and clean quickly.</p></div>
+        <div class="card">💰 Affordable<p>Competitive pricing for everyone.</p></div>
+        <div class="card">🌿 Eco-Friendly<p>Safe cleaning products & water-friendly solutions.</p></div>
+        <div class="card">📞 Reliable Support<p>24/7 contact and assistance.</p></div>
+    </div>
 </section>
 
-<!-- SERVICES -->
 <section id="services">
-<h1>Services</h1>
-<div class="card">🌿 Grass Cutting - $25<br><button class="service-btn" onclick="addService('Grass Cutting',25)">+ Add</button></div>
-<div class="card">🗑️ 1 Trash Bin - $30<br><button class="service-btn" onclick="addService('1 Trash Bin',30)">+ Add</button></div>
-<div class="card">🔥 2 Trash Bins - $50<br><button class="service-btn" onclick="addService('2 Trash Bins',50)">+ Add</button></div>
-<div style="text-align:center;"><button onclick="clearServices()">Reset</button></div>
-<div style="text-align:center;"><button class="main-btn" onclick="showPage('book')">Continue</button></div>
+    <h1>Services</h1>
+    <div class="card">🌿 Grass Cutting - $25<br><button onclick="addService('Grass Cutting',25)">Add</button></div>
+    <div class="card">🗑️ 1 Trash Bin - $30<br><button onclick="addService('1 Trash Bin',30)">Add</button></div>
+    <div class="card">🔥 2 Trash Bins - $50<br><button onclick="addService('2 Trash Bins',50)">Add</button></div>
+    <div style="text-align:center;"><button onclick="clearServices()">Reset</button></div>
+    <div style="text-align:center;"><button class="main-btn" onclick="showPage('book')">Go to Booking</button></div>
 </section>
 
-<!-- BOOKING -->
 <section id="book">
-<h1>Book</h1>
-<p id="serviceList"></p>
-<div class="total-box" id="totalPrice">Total: $0</div>
-<form id="form">
-<input type="text" name="name" placeholder="Name" required>
-<input type="text" name="phone" placeholder="Phone" required>
-<input type="text" id="address" name="address" placeholder="Address" required>
-<div id="map"></div>
-<input type="date" name="date" required>
-<select name="time" required>
-<option value="">Select Time</option>
-<option>9:00 AM</option><option>10:00 AM</option><option>11:00 AM</option>
-<option>12:00 PM</option><option>1:00 PM</option><option>2:00 PM</option>
-</select>
-<button type="button" class="pay-btn" id="stripePayBtn">Pay with Card 💳</button>
-<button type="button" class="pay-btn" style="background:#ef4444" id="cashAppBtn">Cash App 💸</button>
-</form>
+    <h1>Book</h1>
+    <p id="serviceList" style="text-align:center;"></p>
+    <div class="total-box" id="totalPrice">Total: $0</div>
+
+    <form id="form">
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="text" name="phone" placeholder="Phone" required>
+        <input type="text" id="address" name="address" placeholder="Address" required>
+        <div id="map"></div>
+        <input type="date" name="date" required>
+        <select name="time" required>
+            <option value="">Select Time</option>
+            <option>9:00 AM</option>
+            <option>10:00 AM</option>
+            <option>11:00 AM</option>
+            <option>12:00 PM</option>
+            <option>1:00 PM</option>
+            <option>2:00 PM</option>
+            <option>3:00 PM</option>
+            <option>4:00 PM</option>
+            <option>5:00 PM</option>
+        </select>
+        <input type="hidden" id="servicesInput" name="services">
+        <input type="hidden" id="priceInput" name="price">
+        <button class="pay-btn" type="submit">Pay with Cash App 💸</button>
+    </form>
 </section>
 
-<!-- DASHBOARD -->
 <section id="dashboard">
-<h1>Dashboard</h1>
-<div id="dashboardLogin">
-<input type="password" id="dashboardPassword" placeholder="Admin Password">
-<button onclick="loginDashboard()">Login</button>
-</div>
-<div id="dashboardList"></div>
+    <h1>Owner Dashboard</h1>
+    <div id="dashboardLogin" style="text-align:center;">
+        <input type="password" id="adminPass" placeholder="Enter Admin Password">
+        <button onclick="checkPassword()">Login</button>
+    </div>
+    <div class="dashboard" id="dashboardList" style="display:none;"></div>
+    <div style="text-align:center;"><button class="main-btn" onclick="clearBookings()">Clear All</button></div>
 </section>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://js.stripe.com/v3/"></script>
 <script>
-// Pages & sliding
 let services={}, total=0;
-function showPage(id){
-    document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    updateDisplay();
-}
+function showPage(id){document.querySelectorAll('section').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); if(id==='book') updateDisplay();}
+function addService(name, price){if(!services[name]) services[name]=0; services[name]++; total+=price; updateDisplay();}
+function clearServices(){services={}; total=0; updateDisplay();}
+function updateDisplay(){let list=[]; for(let s in services) list.push(s+" x"+services[s]); document.getElementById("serviceList").innerText=list.length?"Selected: "+list.join(", "):""; document.getElementById("totalPrice").innerText="Total: $"+total; document.getElementById("servicesInput").value=list.join(", "); document.getElementById("priceInput").value=total;}
 
-// Services
-function addService(name,price){ services[name]=(services[name]||0)+1; total+=price; updateDisplay(); }
-function clearServices(){ services={}; total=0; updateDisplay(); }
-function updateDisplay(){ 
-    let list=[]; 
-    for(let s in services) list.push(s+" x"+services[s]); 
-    document.getElementById("serviceList").innerText=list.join(', '); 
-    document.getElementById("totalPrice").innerText="Total: $"+total;
-}
-
-// Stripe + Cash App
-const stripe=Stripe('YOUR_STRIPE_PUBLISHABLE_KEY'); // replace with your key
-document.getElementById('stripePayBtn').onclick=async()=>{
-    if(total<=0)return alert('Select service');
-    const bookingData={
-        amount:total,
-        services:Object.entries(services),
-        name:document.querySelector('input[name="name"]').value,
-        phone:document.querySelector('input[name="phone"]').value,
-        date:document.querySelector('input[name="date"]').value,
-        time:document.querySelector('select[name="time"]').value,
-        address:document.querySelector('input[name="address"]').value
-    };
-    await fetch('/create-checkout-session',{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body: JSON.stringify(bookingData)
-    }).then(r=>r.json())
-      .then(s=>stripe.redirectToCheckout({sessionId:s.id}));
-    alert('Booking sent! Owner notified 🔔');
-};
-document.getElementById('cashAppBtn').onclick=()=>{
-    if(total<=0)return alert('Select service');
-    window.open(`https://cash.app/$Taeski09/${total}`);
-    alert('Booking sent! Owner notified 🔔');
-};
-
-// Map
-let map=L.map('map').setView([29.7,-95.3],13);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-let marker=L.marker([29.7,-95.3]).addTo(map);
-document.getElementById('address').addEventListener('input', async e=>{
-    let val=e.target.value;
-    if(val.length<3) return;
-    let res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${val}`);
-    let data = await res.json();
-    if(data[0]){
-        marker.setLatLng([data[0].lat,data[0].lon]);
-        map.setView([data[0].lat,data[0].lon],16);
-    }
+/* FORM */
+document.getElementById("form").addEventListener("submit", function(e){
+    e.preventDefault();
+    if(total<=0){alert("Select a service"); return;}
+    let booking={name:this.name.value, phone:this.phone.value, address:this.address.value, services:this.services.value, total:total, date:this.date.value, time:this.time.value};
+    let bookings=JSON.parse(localStorage.getItem("atkBookings")||"[]"); bookings.push(booking); localStorage.setItem("atkBookings",JSON.stringify(bookings));
+    let amount=total; window.open(`https://cash.app/$Taeski09/${amount}`, '_blank'); alert("Booking saved! Complete payment in the new Cash App tab.");
 });
 
-// Dashboard login & live update
-const ADMIN_PASSWORD='ATK123';
-window.bookings = [];
-function loginDashboard(){
-    const pass=document.getElementById('dashboardPassword').value;
-    if(pass===ADMIN_PASSWORD){
-        document.getElementById('dashboardLogin').style.display='none';
-        updateDashboard();
-        setInterval(updateDashboard,2000);
-    } else alert('Incorrect password!');
+/* DASHBOARD */
+let dashboardInterval;
+function checkPassword(){
+    let pass=document.getElementById("adminPass").value;
+    if(pass==="admin123"){
+        document.getElementById("dashboardLogin").style.display="none";
+        document.getElementById("dashboardList").style.display="block";
+        loadDashboard();
+        if(!dashboardInterval) dashboardInterval=setInterval(loadDashboard,1000);
+    }else{alert("Incorrect password");}
 }
-async function updateDashboard(){
-    const res = await fetch('/bookings');
-    const data = await res.json();
-    window.bookings = data;
-    const dash = document.getElementById('dashboardList');
-    dash.innerHTML = '';
-    data.forEach((b, idx)=>{
-        let div = document.createElement('div');
-        div.className='card';
-        div.innerHTML=`
-          <b>${b.name}</b><br>
-          ${b.services.map(s=>s[0]+" x"+s[1]).join(', ')}<br>
-          Total: $${b.total}<br>
-          ${b.date} ${b.time}<br>
-          ${b.address}<br>
-          <button onclick="generateInvoice(${idx})">🧾 Invoice</button>
-        `;
-        dash.appendChild(div);
-    });
+function loadDashboard(){
+    let container=document.getElementById("dashboardList"); container.innerHTML="";
+    let bookings=JSON.parse(localStorage.getItem("atkBookings")||"[]");
+    bookings.forEach(b=>{ let div=document.createElement("div"); div.className="booking"; div.innerHTML=`<b>${b.name}</b><br>${b.services}<br>$${b.total}<br>${b.date} - ${b.time}<br>📍 ${b.address}`; container.appendChild(div); });
 }
+function clearBookings(){localStorage.removeItem("atkBookings"); loadDashboard();}
 
-// Generate invoice
-function generateInvoice(idx){
-    const b = window.bookings[idx];
-    let invoiceWindow = window.open('', '_blank', 'width=600,height=700');
-    invoiceWindow.document.write(`
-      <html>
-      <head>
-        <title>Invoice - A.T.K. FreshBin</title>
-        <style>
-          body{font-family:'Segoe UI'; padding:20px; background:#f5f5f5; color:#111;}
-          h1{color:#22d3ee;}
-          .details{margin-top:20px;}
-          .details p{margin:5px 0;}
-        </style>
-      </head>
-      <body>
-        <h1>🧾 A.T.K. FreshBin Invoice</h1>
-        <div class="details">
-          <p><b>Name:</b> ${b.name}</p>
-          <p><b>Phone:</b> ${b.phone}</p>
-          <p><b>Services:</b> ${b.services.map(s=>s[0]+" x"+s[1]).join(', ')}</p>
-          <p><b>Total:</b> $${b.total}</p>
-          <p><b>Date & Time:</b> ${b.date} ${b.time}</p>
-          <p><b>Address:</b> ${b.address}</p>
-        </div>
-        <button onclick="window.print()">Print Invoice 🖨️</button>
-      </body>
-      </html>
-    `);
-}
+/* LEAFLET MAP */
+let map = L.map('map').setView([29.7604, -95.3698], 13);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:19}).addTo(map);
+let marker = L.marker([29.7604, -95.3698]).addTo(map);
+
+// Geocode address input with Nominatim
+const addressInput = document.getElementById('address');
+addressInput.addEventListener('input', async ()=>{
+    let val = addressInput.value;
+    if(val.length<3) return;
+    let url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(val)}`;
+    let res = await fetch(url); let data = await res.json();
+    if(data.length>0){
+        let lat=data[0].lat, lon=data[0].lon;
+        marker.setLatLng([lat,lon]);
+        map.setView([lat,lon],16);
+    }
+});
 </script>
 </body>
 </html>
+
